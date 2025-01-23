@@ -1,0 +1,15 @@
+- Storage layer - Blackbaze B2 Cloud Storage
+  - Primary data repository
+  - Low cost s3-compatible APIs
+  - Redundancy: Each file is stored redundantly across multiple drives, in multiple servers, in multiple locations in the data center.
+- Data access layer - API in EC2
+  - Abstracts interation with B2
+  - Manages access
+  - Caching (i.e Redis to speedup frequent requests)
+  - Interface compatible with any clients
+- Caching with Redis
+  - Stores frequently accessed data for faster response
+- Load Balancer
+  - Distributes traffic
+  - Direct traffic to health EC2 instances
+  - Least connections strategy to deal with file processing from B2
