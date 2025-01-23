@@ -93,10 +93,25 @@ PS: Be careful to not confuse problem with explanation.
 
 ### 🌏 6. For each key major component
 
-What is a majore component? A service, a lambda, a important ui, a generalized approach for all uis, a generazid approach for computing a workload, etc...
-
 ```
-6.1 - Class Diagram              : classic uml diagram with attributes and methods
+
+- Storage layer - Blackbaze B2 Cloud Storage
+  - Primary data repository
+  - Low cost s3-compatible APIs
+  - Redundancy: Each file is stored redundantly across multiple drives, in multiple servers, in multiple locations in the data center.
+- Data access layer - API in EC2
+  - Abstracts interation with B2
+  - Manages access
+  - Caching (i.e Redis to speedup frequent requests)
+  - Interface compatible with any clients
+- Caching with Redis
+  - Stores frequently accessed data for faster response
+- Load Balancer
+  - Distributes traffic
+  - Direct traffic to health EC2 instances
+  - Least connections strategy to deal with file processing from B2
+
+6.1 -               : classic uml diagram with attributes and methods
 6.2 - Contract Documentation     : Operations, Inputs and Outputs
 6.3 - Persistence Model          : Diagrams, Table structure, partiotioning, main queries.
 6.4 - Algorithms/Data Structures : Spesific algos that need to be used, along size with spesific data structures.
