@@ -10,7 +10,7 @@ Example:
 ```
 Food and Co is a food company that is using AWS S3 to store their food data.
 It has started to be too expensive for the company though.
-It is needed to create a new architecture and also migrate out of S3 in a smooth way.
+It is needed to make it cheaper without much noise and in a smooth way.
 ```
 
 Recomended Reading: http://diego-pacheco.blogspot.com/2021/10/breaking-problems-down.html
@@ -22,10 +22,8 @@ Example:
 
 ```
 1. Solution needs to be cheaper than current (AWS S3)
-2. Transition needs to be smooth
-3. We need a new architecture
-4. It needs to keep the same functionalities as it has today (analytics, image store, machine learning,...)
-5. It needs to be out of S3
+2. Migration needs to be smooth
+3. It needs to keep the same functionalities as it has today (analytics, image store, machine learning,...)
 ```
 
 Recommended Learning: http://diego-pacheco.blogspot.com/2020/05/education-vs-learning.html
@@ -36,8 +34,9 @@ List in form of bullets what non-goals do have. Here it's great to have 5-10 lin
 Example:
 
 ```
-1. Simple service replacement: we also need to create a new architecture
-2. New application: we need to keep our current data while doing the migration
+1. Change data: we don't want to change the existing data
+2. New application: we don't necessary need a new application
+3. We don't necessary need to migrate out of S3, if we find a cheap way of keeping it
 ```
 
 Recommended Reading: http://diego-pacheco.blogspot.com/2021/01/requirements-are-dangerous.html
@@ -88,6 +87,15 @@ CONS (+)
   * Downtime needed for manual migration
 ```
 
+|          | B2  | S3  | Azure | Google Cloud |
+| -------- | --- | --- | ----- | ------------ |
+| TB/month | $6  | $26 | $20   | $23          |
+
+#### Migration costs
+
+- $0.08 - $0.12 / GiB
+- Blackbaze pay fees if over 50 TB are transfered (https://flexify.io/clouds/backblaze-b2)
+
 PS: Be careful to not confuse problem with explanation.
 <BR/>Recommended reading: http://diego-pacheco.blogspot.com/2023/07/tradeoffs.html
 
@@ -125,24 +133,117 @@ Recommended Reading: http://diego-pacheco.blogspot.com/2018/05/internal-system-d
 
 ![migration diagram](./migration-diagram.drawio.png)
 
-### 🖹 8. Testing strategy
+### 🖹 8. Use cases & contracts
+
+#### 8.1 Upload file
+
+- Client sends request to upload file to API
+- API generates a pre-signed URL from B2
+- Client updates file to B2 using the URL
+- API stores file metadata in Redis for fast access
+
+- METHOD: `POST`
+- URL: `/upload`
+- Payload:
+
+```json
+{
+  "filename": "photo1.jpg",
+  "contentType": "image/jpeg",
+  "size": 2048000
+}
+```
+
+- Response:
+
+```json
+{
+  "uploadUrl": "https://backblazeb2.com/my-bucket/naf7fh2738fh198aka/photo1.jpg",
+  "fileId": "naf7fh2738fh198aka"
+}
+```
+
+#### 8.2 Download file
+
+- Client requests a file to API
+- API checks Redis for pre-signed URL
+  - If cached, returns URL to client
+  - If not, API asks B2 for a pre-signed URL and stores in Redis and returns to client
+- Client can download the file from pre-signed URL
+
+- METHOD: `GET`
+- URL: `/download/{id}`
+
+- Response:
+
+```json
+{
+  "downloadUrl": "https://backblazeb2.com/my-bucket/naf7fh2738fh198aka/photo1.jpg"
+}
+```
+
+#### 8.3 Search file
+
+- Client sends a search query to API
+- API checks Redis for cached searches
+
+  - If cached, returns the metadata
+  - If not, queries metadata from B2 and returns
+
+- METHOD: `GET`
+- URL: `/search/{fileName}`
+
+- Response:
+
+```json
+{
+  "results": [
+    {
+      "fileId": "naf7fh2738fh198aka",
+      "filename": "photo1.jpg",
+      "size": 2048000,
+      "uploadedAt": "2024-02-06T12:00:00Z"
+    }
+  ]
+}
+```
+
+#### 8.4 Delete file
+
+- Client sends delete request to API
+- API verifies permissions
+- API sends delete command to B2
+- API remotes metadata from Redis
+
+- METHOD: `DELETE`
+- URL: `/delete/{id}`
+
+- Response:
+
+```json
+{
+  "message": "File deleted"
+}
+```
+
+### 🖹 9. Testing strategy
 
 - Manual testing - Since we're working with images, manual test will be the most accurate way to check key images weren't lost
 - AI Assertions - As the storage is beingused for machine learning, we could compare results from previous S3 storage and B2 storage to see if we get same results using same thresholds
 
-### 🖹 9. Observability strategy
+### 🖹 10. Observability strategy
 
 Explain the techniques, principles,types of observability that will be used, key metrics, what would be logged and how to design proper dashboards and alerts.
 
-### 🖹 10. Data Store Designs
+### 🖹 11. Data Store Designs
 
 For each different kind of data store i.e (Postgres, Memcached, Elasticache, S3, Neo4J etc...) describe the schemas, what would be stored there and why, main queries, expectations on performance. Diagrams are welcome but you really need some dictionaries.
 
-### 🖹 11. Technology Stack
+### 🖹 12. Technology Stack
 
 Describe your stack, what databases would be used, what servers, what kind of components, mobile/ui approach, general architecture components, frameworks and libs to be used or not be used and why.
 
-### 🖹 12. References
+### 🖹 13. References
 
 - Architecture Anti-Patterns: https://architecture-antipatterns.tech/
 - EIP https://www.enterpriseintegrationpatterns.com/
