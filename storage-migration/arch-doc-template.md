@@ -159,7 +159,8 @@ Recommended Reading: http://diego-pacheco.blogspot.com/2018/05/internal-system-d
 ```json
 {
   "uploadUrl": "https://backblazeb2.com/my-bucket/naf7fh2738fh198aka/photo1.jpg",
-  "fileId": "naf7fh2738fh198aka"
+  "fileId": "naf7fh2738fh198aka",
+  "expirationDate": "2025-02-20T15:30:00Z"
 }
 ```
 
@@ -178,7 +179,8 @@ Recommended Reading: http://diego-pacheco.blogspot.com/2018/05/internal-system-d
 
 ```json
 {
-  "downloadUrl": "https://backblazeb2.com/my-bucket/naf7fh2738fh198aka/photo1.jpg"
+  "downloadUrl": "https://backblazeb2.com/my-bucket/naf7fh2738fh198aka/photo1.jpg",
+  "expirationDate": "2025-02-20T15:30:00Z"
 }
 ```
 
