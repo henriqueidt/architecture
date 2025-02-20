@@ -230,20 +230,54 @@ Recommended Reading: http://diego-pacheco.blogspot.com/2018/05/internal-system-d
 
 ### 🖹 9. Testing strategy
 
-- Manual testing - Since we're working with images, manual test will be the most accurate way to check key images weren't lost
-- AI Assertions - As the storage is beingused for machine learning, we could compare results from previous S3 storage and B2 storage to see if we get same results using same thresholds
+- Benchmark testing: to ensure download/upload speed is similar before & after the migration
+- E2E testing: After the migration, e2e can be used to ensure application key functionalities work.
+- Visual regression (CSS) testing: Visual regression tests will catch any discrepancies or unloaded assets in the UI.
 
 ### 🖹 10. Observability strategy
 
-Explain the techniques, principles,types of observability that will be used, key metrics, what would be logged and how to design proper dashboards and alerts.
+- Logging strategy: Set up a logging platform splunk to log any errors or timeouts when retrieving / saving assets
+- Analytics: Setup an analytics platform like Heap, to observe any analytics discrepancy after the migration and to keep monitoring sessions for discrepancies too.
+- Use a platform like Datadog to monitor metrics, performance, usage, etc.
 
 ### 🖹 11. Data Store Designs
 
-For each different kind of data store i.e (Postgres, Memcached, Elasticache, S3, Neo4J etc...) describe the schemas, what would be stored there and why, main queries, expectations on performance. Diagrams are welcome but you really need some dictionaries.
+#### Database - store metadata and migration logs
+
+| Table          | Content                                   | Reason                 |
+| -------------- | ----------------------------------------- | ---------------------- |
+| files          | file metadata, URLs, and migration status | Ensures data integrity |
+| migration_logs | track migration status                    | Debug migrations       |
+
+- Find files that haven't been migrated yet:
+  - SELECT \* FROM files WHERE is_migrated = FALSE;
+- Get File metadata
+  - SELECT id, file_name, file_size, storage_url, is_migrated, created_at
+    FROM files
+    WHERE id = ?;
+
+#### Redis - caches files pre-signed urls for fast access
+
+| Key     | Value                                                                                                   | TTL |
+| ------- | ------------------------------------------------------------------------------------------------------- | --- |
+| file_id | { "url": "https://backblazeb2.com/my-bucket/naf7fh2738fh198aka/photo1.jpg", "expires_at": 17126378168 } | 15  |
+
+#### Blackbaze B2 - Stores actual files migrated from S3
+
+| Bucket            | Folder structure                               |
+| ----------------- | ---------------------------------------------- |
+| b2://food-company | category/{food_category}/{version}/{file_name} |
+| b2://food-company | category/{food_category}/thumbnail/{file_name} |
 
 ### 🖹 12. Technology Stack
 
-Describe your stack, what databases would be used, what servers, what kind of components, mobile/ui approach, general architecture components, frameworks and libs to be used or not be used and why.
+| Technology   | Purpose                                                | Reason                                                        |
+| ------------ | ------------------------------------------------------ | ------------------------------------------------------------- |
+| Backblaze B2 | File Storage                                           | Cheaper than S3, compatible APIs, support for pre-signed URLs |
+| PostgreSQL   | Store files metadata and migration logs                | Scalable, reliable and good for structured data               |
+| Redis        | Cache file metadata and pre-signed URLs                | Improve response time for highly accessed files               |
+| EC2          | Hosts the Backend APIs that connect the client with B2 | Offers scalability to APIs                                    |
+| AWS ALB      | Load balancer to distribute traffic                    | Automatic scaling, high availability                          |
 
 ### 🖹 13. References
 
