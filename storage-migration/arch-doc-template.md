@@ -258,9 +258,9 @@ Recommended Reading: http://diego-pacheco.blogspot.com/2018/05/internal-system-d
 
 #### Redis - caches files pre-signed urls for fast access
 
-| Key     | Value                                                                                                   | TTL |
-| ------- | ------------------------------------------------------------------------------------------------------- | --- |
-| file_id | { "url": "https://backblazeb2.com/my-bucket/naf7fh2738fh198aka/photo1.jpg", "expires_at": 17126378168 } | 15  |
+| Key     | Value                                                                                                                                                                                                                              | TTL |
+| ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
+| file_id | { "url": "https://f345.backblazeb2.com/file/my-bucket/f5ee17cd1de-.jpg?Authorization=3_20160803004041_53982a92f631a8c7303e3266_d940c7f5ee17cd1de3758aaacf1024188bc0cd0b_000_20160804004041_0006_dnld", "expires_at": 17126378168 } | 15  |
 
 #### Blackbaze B2 - Stores actual files migrated from S3
 
@@ -278,6 +278,23 @@ Recommended Reading: http://diego-pacheco.blogspot.com/2018/05/internal-system-d
 | Redis        | Cache file metadata and pre-signed URLs                | Improve response time for highly accessed files               |
 | EC2          | Hosts the Backend APIs that connect the client with B2 | Offers scalability to APIs                                    |
 | AWS ALB      | Load balancer to distribute traffic                    | Automatic scaling, high availability                          |
+
+#### Redis vs Amazon ElastiCache
+
+- ElastiCache
+
+  - Managed platform
+  - Can integrate with Redis
+  - Provides monitoring, backups, auto failover (automation)
+  - USD 0,084/GB/hour
+
+- Redis
+
+  - Open-source caching service and data store
+  - Provides more control and personalisation of the cache
+  - Redis Enterprise provides managed cache
+    - More predictable cost structure
+    - $0.274/hour
 
 ### 🖹 13. References
 
