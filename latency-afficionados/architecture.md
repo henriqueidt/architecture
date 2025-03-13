@@ -49,19 +49,7 @@ The backend is in a monolith on Java 1.4. We need to migrate it to java 21, whil
 5. Cache efficiency: We need to have an efficient cache system in order to make it faster for UI to render
 ```
 
-<!-- CONTINUE HERE -->
-
 ### 🏗️ 4. Overall Diagrams
-
-Here there will be a bunch of diagrams, to understand the solution.
-
-```
-🗂️ 4.1 Overall architecture: Show the big picture, relationship between macro components.
-🗂️ 4.2 Deployment: Show the infra in a big picture.
-🗂️ 4.3 Use Cases: Make 1 macro use case diagram that list the main capability that needs to be covered.
-```
-
-Recommended Reading: http://diego-pacheco.blogspot.com/2020/10/uml-hidden-gems.html
 
 ### 🧭 5. Trade-offs
 
@@ -78,25 +66,35 @@ Major Decisions:
 
 Tradeoffs:
 
-```
-1. React Native vs (Flutter and Native)
-2. Serverless vs Microservices
-3. Redis vs Enbeded Caches
-```
+1. Modernize the frontend rendering with SSR vs ISR vs keep as is (CSR)
 
-Each tradeoff line need to be:
+- SSR (SERVER SIDE RENDERING):
 
-```
-PROS (+)
-  * Benefit: Explanation that justify why the benefit is true.
-CONS (+)
-  * Problem: Explanation that justify why the problem is true.
-```
+  - (+) Can be more performatic specially for slower devices
+  - (+) Better for Dynamic content as pages are render on request
+  - (-) Slow latency as pages are rendered on the server on each page request
+  - (-) Requires more service allocation = more expensive
 
-PS: Be careful to not confuse problem with explanation.
-<BR/>Recommended reading: http://diego-pacheco.blogspot.com/2023/07/tradeoffs.html
+- CSR (CLIENT SIDE RENDERING) CURRENT:
 
-### 🌏 6. For each key major component
+  - (+) Less backend computation = cheaper
+  - (+) Good for pages with high interaction
+  - (-) Bad SEO
+  - (-) Slow rendering time
+
+- ISR (INCREMENTAL STATIC REGENERATION)
+  - (+) Combines static generation with real-time updates for frequently changed data
+  - (+) Faster load as pages are prebuilt in the background
+  - (-) Complex cache revalidation
+
+2. Single shared DB vs Splitted DBs per service
+
+- (+) With independent DBs, each service manages it's own data, avoiding distributed monolith issues
+- (+) Better isolation, changes to one DB shouldn't affect the others
+- (-) Keeping data consistent between all services and DBs can be more complex
+- (-) More operational overhead with multiple DBs to manage
+
+<!-- ### 🌏 6. For each key major component
 
 What is a majore component? A service, a lambda, a important ui, a generalized approach for all uis, a generazid approach for computing a workload, etc...
 
@@ -145,4 +143,4 @@ Describe your stack, what databases would be used, what servers, what kind of co
 - 12 Factors App https://12factor.net/
 - Relational DB Patterns https://www.geeksforgeeks.org/design-patterns-for-relational-databases/
 - Rendering Patterns https://www.patterns.dev/vanilla/rendering-patterns/
-- REST API Design https://blog.stoplight.io/api-design-patterns-for-rest-web-services
+- REST API Design https://blog.stoplight.io/api-design-patterns-for-rest-web-services -->
