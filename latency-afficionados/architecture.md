@@ -70,10 +70,9 @@ Tradeoffs:
 
 - SSR (SERVER SIDE RENDERING):
 
-  - (+) Can be more performatic specially for slower devices
+  - (+) More performatic as most of computation is done on the server
   - (+) Better for Dynamic content as pages are render on request
-  - (-) Slow latency as pages are rendered on the server on each page request
-  - (-) Requires more service allocation = more expensive
+  - (-) Low latency as pages are rendered on the server on each page request
 
 - CSR (CLIENT SIDE RENDERING) CURRENT:
 
