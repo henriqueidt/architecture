@@ -33,8 +33,8 @@ The backend is in a monolith on Java 1.4. We need to migrate it to java 21, whil
 
 ```
 1. Kepp all in a single monolith. We want to decompose as possible.
-2. Change the application UI. We want to keep the same ui, but with faster rendering.
-3.
+2. Create a new UI application. React 16 is not that far from newer technology, so we can migrate without needing to recreate everything.
+3. Create new functionalities. There's no need for new functionalities, the pain is with current performance
 4.
 5.
 ```
@@ -59,14 +59,15 @@ example:
 Major Decisions:
 
 ```
-1. One mobile code base - should be (...)
-2. Reusable capability and low latency backends should be (...)
-3. Cache efficiency therefore should do (...)
+1. Performatic UI rendering with ISR
+2. Splitting DBs per microservice
 ```
 
 Tradeoffs:
 
-1. Modernize the frontend rendering with SSR vs ISR vs keep as is (CSR)
+1. Modernize the frontend rendering with SSR vs CSR
+
+https://github.com/henriqueidt/poc-rendering-techniques
 
 - SSR (SERVER SIDE RENDERING):
 
@@ -81,7 +82,7 @@ Tradeoffs:
   - (-) Bad SEO
   - (-) Slow rendering time
 
-- ISR (INCREMENTAL STATIC REGENERATION)
+- ISR (INCREMENTAL STATIC REGENERATION) - hybrid solution
   - (+) Combines static generation with real-time updates for frequently changed data
   - (+) Faster load as pages are prebuilt in the background
   - (-) Complex cache revalidation
