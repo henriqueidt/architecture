@@ -35,8 +35,6 @@ The backend is in a monolith on Java 1.4. We need to migrate it to java 21, whil
 1. Kepp all in a single monolith. We want to decompose as possible.
 2. Create a new UI application. React 16 is not that far from newer technology, so we can migrate without needing to recreate everything.
 3. Create new functionalities. There's no need for new functionalities, the pain is with current performance
-4.
-5.
 ```
 
 ### 📐 3. Principles
@@ -82,7 +80,7 @@ https://github.com/henriqueidt/poc-rendering-techniques
   - (-) Bad SEO
   - (-) Slow rendering time
 
-- ISR (INCREMENTAL STATIC REGENERATION) - hybrid solution
+- ISR (INCREMENTAL STATIC REGENERATION) - hybrid solution with Next.js
   - (+) Combines static generation with real-time updates for frequently changed data
   - (+) Faster load as pages are prebuilt in the background
   - (-) Complex cache revalidation
@@ -93,6 +91,15 @@ https://github.com/henriqueidt/poc-rendering-techniques
 - (+) Better isolation, changes to one DB shouldn't affect the others
 - (-) Keeping data consistent between all services and DBs can be more complex
 - (-) More operational overhead with multiple DBs to manage
+
+3. Connect client directly to Microservices vs using a BFF
+
+- (+) The BFF can act as a facade, hiding complexity of calling multiple microservices from client
+- (+) The BFF can act as a gateway between services and client, making it easy to migrate from the monolith to microservices (we can refactor the services as we go, as long as we keep the BFF contract the same)
+- (+) The BFF can deal with authentication, so that we don't need to have it on every microservice
+- (+) The BFF can run in a CDN edge location (Cloudflare) with faster responses to client
+- (-) The BFF will introduce a new service to be mantained, monitored, scaled, etc.
+- (-) BFF Adds another layer to debug, observe
 
 <!-- ### 🌏 6. For each key major component
 
