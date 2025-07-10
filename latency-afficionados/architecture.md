@@ -92,14 +92,13 @@ https://github.com/henriqueidt/poc-rendering-techniques
 - (-) Keeping data consistent between all services and DBs can be more complex
 - (-) More operational overhead with multiple DBs to manage
 
-3. Connect client directly to Microservices vs using a BFF
+3. Connect client directly to Microservices vs using an API Gateway
 
-- (+) The BFF can act as a facade, hiding complexity of calling multiple microservices from client
-- (+) The BFF can act as a gateway between services and client, making it easy to migrate from the monolith to microservices (we can refactor the services as we go, as long as we keep the BFF contract the same)
-- (+) The BFF can deal with authentication, so that we don't need to have it on every microservice
-- (+) The BFF can run in a CDN edge location (Cloudflare) with faster responses to client
-- (-) The BFF will introduce a new service to be mantained, monitored, scaled, etc.
-- (-) BFF Adds another layer to debug, observe
+- (+) The API Gateway can act as a facade, hiding complexity of calling multiple microservices from client
+- (+) The API Gateway makes it easy to migrate from the monolith to microservices (we can refactor the services as we go, as long as we keep the Gateway contract the same)
+- (+) The API Gateway can deal with authentication, so that we don't need to have it on every microservice
+- (-) The API Gateway will introduce a new service to be mantained, monitored, scaled, etc.
+- (-) The API Gateway Adds another layer to debug, observe
 
 <!-- ### 🌏 6. For each key major component
 
