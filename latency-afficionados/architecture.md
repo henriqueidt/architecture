@@ -85,14 +85,32 @@ https://github.com/henriqueidt/poc-rendering-techniques
   - (+) Faster load as pages are prebuilt in the background
   - (-) Complex cache revalidation
 
-2. Single shared DB vs Splitted DBs per service
+2. NextJS vs Others
+
+- NextJS
+
+  - (+) Mature ecossystem, less boilerplate, large community
+  - (+) Easy to implement multiple rendering techniques Out of the Box
+  - (+) Good Out of the Box BE integration tools (API routes, server actions)
+  - (+) Built in performance features like Link prefetching, image optimization
+  - (-) Bundle size
+
+- Astro
+  - (+) Lighter bundle, only serves necessary JS
+  - (+) Easy to use, simple features
+  - (-) Less mature, small community
+  - (-) Less robust features out of the box
+
+Overall, Astro fits great for simple static sites, but for robust website with different features and higher complexity, NextJS seems to be the right fit
+
+3. Single shared DB vs Splitted DBs per service
 
 - (+) With independent DBs, each service manages it's own data, avoiding distributed monolith issues
 - (+) Better isolation, changes to one DB shouldn't affect the others
 - (-) Keeping data consistent between all services and DBs can be more complex
 - (-) More operational overhead with multiple DBs to manage
 
-3. Connect client directly to Microservices vs using an API Gateway
+4. Connect client directly to Microservices vs using an API Gateway
 
 - (+) The API Gateway can act as a facade, hiding complexity of calling multiple microservices from client
 - (+) The API Gateway makes it easy to migrate from the monolith to microservices (we can refactor the services as we go, as long as we keep the Gateway contract the same)
