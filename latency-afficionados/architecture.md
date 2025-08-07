@@ -118,7 +118,7 @@ Overall, Astro fits great for simple static sites, but for robust website with d
 - (-) The API Gateway will introduce a new service to be mantained, monitored, scaled, etc.
 - (-) The API Gateway Adds another layer to debug, observe
 
-<!-- ### 🌏 6. For each key major component
+### 🌏 6. For each key major component
 
 What is a majore component? A service, a lambda, a important ui, a generalized approach for all uis, a generazid approach for computing a workload, etc...
 
@@ -128,6 +128,89 @@ What is a majore component? A service, a lambda, a important ui, a generalized a
 6.3 - Persistence Model          : Diagrams, Table structure, partiotioning, main queries.
 6.4 - Algorithms/Data Structures : Spesific algos that need to be used, along size with spesific data structures.
 ```
+
+#### CONTRACTS:
+
+**User Service:**
+
+1. POST /api/users/register
+
+- REQ Body:
+  ```JSON
+    {
+      "name": "Henrique Eidt",
+      "email": "henrique@example.com",
+      "password": "q938j89a4g8"
+    }
+  ```
+- RESP Body:
+  ```JSON
+    {
+      "message": "User registered successfully"
+    }
+  ```
+
+2. POST /api/users/login
+
+- REQ Body:
+  ```JSON
+    {
+      "email": "henrique@example.com",
+      "password": "q938j89a4g8"
+    }
+  ```
+- RESP Body:
+  ```JSON
+    {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30",
+      "name": "Henrique Eidt",
+      "email": "henrique@example.com",
+      "avatar": "https://example.com/avatar.jpg"
+    }
+  ```
+  **Product Service:**
+
+1. GET /api/products
+
+- QUERY PARAMS:
+
+  |   Param   |  Type  |             Description             |
+  | :-------: | :----: | :---------------------------------: |
+  |   page    |  int   |            Current page             |
+  | page_size |  int   |           Items per page            |
+  |   sort    | string | Optional: i.e. price_asc, name_desc |
+  | category  | string |           Optional filter           |
+  |  search   | string |        Optional search query        |
+
+- REQ Example:
+  ```HTTP
+  GET /api/products?page=1&page_size=20&sort=price_asc
+  ```
+- RESP Body:
+  ```JSON
+    {
+      "data": [
+        {
+          "id": "12345",
+          "title": "Super Mario World",
+          "price": 145.00,
+          "thumbnail": "https://cdn.example.com/img/123.jpg"
+        },
+        {
+          "id": "123456",
+          "title": "Mario Kart",
+          "price": 239.90,
+          "thumbnail": "https://cdn.example.com/img/124.jpg"
+        }
+      ],
+      "pagination": {
+        "page": 2,
+        "page_size": 20,
+        "totalItems": 120,
+        "totalPages": 6
+      }
+    }
+  ```
 
 Exemplos of other components: Batch jobs, Events, 3rd Party Integrations, Streaming, ML Models, ChatBots, etc...
 
@@ -167,4 +250,4 @@ Describe your stack, what databases would be used, what servers, what kind of co
 - 12 Factors App https://12factor.net/
 - Relational DB Patterns https://www.geeksforgeeks.org/design-patterns-for-relational-databases/
 - Rendering Patterns https://www.patterns.dev/vanilla/rendering-patterns/
-- REST API Design https://blog.stoplight.io/api-design-patterns-for-rest-web-services -->
+- REST API Design https://blog.stoplight.io/api-design-patterns-for-rest-web-services
