@@ -133,17 +133,37 @@ What is a majore component? A service, a lambda, a important ui, a generalized a
 
 **User Service:**
 
-1. POST /api/users/register
+1. **POST /api/users/register**
+
+`Registers a new user`
 
 - REQ Body:
-  ```JSON
-    {
-      "name": "Henrique Eidt",
-      "email": "henrique@example.com",
-      "password": "q938j89a4g8"
-    }
-  ```
+
+```JSON
+{
+  "name": "String",
+  "email": "String",
+  "password": "String"
+}
+```
+
+Example:
+
+```JSON
+  {
+    "name": "Henrique Eidt",
+    "email": "henrique@example.com",
+    "password": "q938j89a4g8"
+  }
+```
+
 - RESP Body:
+  ```JSON
+   {
+    "message": "String"
+   }
+  ```
+  Example:
   ```JSON
     {
       "message": "User registered successfully"
@@ -152,7 +172,16 @@ What is a majore component? A service, a lambda, a important ui, a generalized a
 
 2. POST /api/users/login
 
+`User sign in with email and password. Returns a JWT to be used to authenticate subsequent requests.`
+
 - REQ Body:
+  ```JSON
+  {
+    "email": "String",
+    "password": "String"
+  }
+  ```
+  Example:
   ```JSON
     {
       "email": "henrique@example.com",
@@ -160,6 +189,18 @@ What is a majore component? A service, a lambda, a important ui, a generalized a
     }
   ```
 - RESP Body:
+
+  ```JSON
+  {
+    "token": "String",
+    "name": "String",
+    "email": "String",
+    "avatar": "String"
+  }
+  ```
+
+  Example:
+
   ```JSON
     {
       "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30",
@@ -168,9 +209,12 @@ What is a majore component? A service, a lambda, a important ui, a generalized a
       "avatar": "https://example.com/avatar.jpg"
     }
   ```
+
   **Product Service:**
 
 1. GET /api/products
+
+`Retrieves a list of products. Includes pagination, sorting and filtering`
 
 - QUERY PARAMS:
 
@@ -187,6 +231,20 @@ What is a majore component? A service, a lambda, a important ui, a generalized a
   GET /api/products?page=1&page_size=20&sort=price_asc
   ```
 - RESP Body:
+
+  ```JSON
+    {
+      "data": [
+        {
+          "id": "String",
+          "title": "String",
+          "price": "Number",
+          "thumbnail": "String"
+        }
+      ]
+    }
+  ```
+
   ```JSON
     {
       "data": [
