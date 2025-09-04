@@ -42,7 +42,7 @@ JSON Web Tokens consist of three parts, separated by dots (xxxxx.yyyyy.zzzzzz):
 3. Signature
   - The signature part takes the encoded header, encoded payload, a secret, the algorithm specified in the header and sign them
   - It is used to verify the message wasn't changed along the way
-  - Example using HMAC SHA256 algorithm:
+  - Example using HMAC SHA256 (HS256) algorithm:
   ```JAVA
   HMACSHA256(
     base64UrlEncode(header) + "." +
