@@ -118,6 +118,14 @@ Overall, Astro fits great for simple static sites, but for robust website with d
 - (-) The API Gateway will introduce a new service to be mantained, monitored, scaled, etc.
 - (-) The API Gateway Adds another layer to debug, observe
 
+5. Amazon MSK
+- (+) Highly available and scalable without much overhead
+- (+) AWS ecosystem
+- (+) Data persistence and replayability
+- (+) Compability with Apache Kafka ecosystem
+- (-) More expensive than self managed Kafka
+- (-) Vendor lock-in
+
 ### 🌏 6. For each key major component
 
 What is a majore component? A service, a lambda, a important ui, a generalized approach for all uis, a generazid approach for computing a workload, etc...
@@ -141,9 +149,9 @@ What is a majore component? A service, a lambda, a important ui, a generalized a
 
 ```JSON
 {
-  "name": "String",
-  "email": "String",
-  "password": "String"
+  "name": "String" | "The name of the customer",
+  "email": "String" | "The email of the customer",
+  "password": "String" | "The password of the customer to register in the system"
 }
 ```
 
@@ -160,13 +168,20 @@ Example:
 - RESP Body:
   ```JSON
    {
-    "message": "String"
+    "message": "String" | "A message describing if the registration was successfull or not"
    }
   ```
-  Example:
+  Success Example:
   ```JSON
     {
       "message": "User registered successfully"
+    }
+  ```
+
+  Failure Example:
+  ```JSON
+    {
+      "message": "There was a problem registering the user"
     }
   ```
 
@@ -177,8 +192,8 @@ Example:
 - REQ Body:
   ```JSON
   {
-    "email": "String",
-    "password": "String"
+    "email": "String" | "The email of the customer",
+    "password": "String" | "The password of the customer to access the system"
   }
   ```
   Example:
@@ -192,10 +207,10 @@ Example:
 
   ```JSON
   {
-    "token": "String",
-    "name": "String",
-    "email": "String",
-    "avatar": "String"
+    "token": "String" | "JWT token to be used in subsequent requests",
+    "name": "String" | "The name of the customer that logged in",
+    "email": "String" | "The email of the customer that logged in",
+    "avatar": "String" | "The avatar URL of the customer"
   }
   ```
 
@@ -236,10 +251,10 @@ Example:
     {
       "data": [
         {
-          "id": "String",
-          "title": "String",
-          "price": "Number",
-          "thumbnail": "String"
+          "id": "String" | "The unique identifier of the product",
+          "title": "String" | "The title/name of the product",
+          "price": "Number" | "The price of the product",
+          "thumbnail": "String" | "The thumbnail URL of the product"
         }
       ]
     }
