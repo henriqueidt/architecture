@@ -49,6 +49,9 @@ The backend is in a monolith on Java 1.4. We need to migrate it to java 21, whil
 
 ### 🏗️ 4. Overall Diagrams
 
+![Architecture Diagram](./architecture.drawio.png)
+
+
 ### 🧭 5. Trade-offs
 
 List the tradeoffs analysis, comparing pros and cons for each major decision.
