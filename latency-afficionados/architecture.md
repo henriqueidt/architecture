@@ -134,6 +134,12 @@ Overall, Astro fits great for simple static sites, but for robust website with d
 - (-) Less flexible for clients
 - (-) More endpoints to mantain
 
+7. ECS Fargate vs EKS
+- ECS Fargate
+  - (+) Use CloudWatch for monitoring and logging
+  - (+) Runs on AWS infrastructure.
+  - (+) Access managed via IAM roles.
+
 ### 🌏 6. For each key major component
 
 What is a majore component? A service, a lambda, a important ui, a generalized approach for all uis, a generazid approach for computing a workload, etc...
