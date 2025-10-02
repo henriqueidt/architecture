@@ -164,10 +164,23 @@ GraphQL:
 - (-) More complexity on client side to build queries
 
 #### ECS Fargate vs EKS
-ECS Fargate
+
+ECS Fargate (Elastic Container Service):
+
 - (+) Use CloudWatch for monitoring and logging
 - (+) Runs on AWS infrastructure.
 - (+) Access managed via IAM roles.
+- (+) Simpler to set up and manage.
+- (-) Less control over the infrastructure.
+- (-) Vendor lock-in to AWS.
+
+EKS (Elastic Kubernetes Service):
+
+- (+) More control over the Kubernetes environment.
+- (+) More options of configurations and customizations.
+- (+) Can run on multiple cloud providers or on-premises.
+- (-) More complex to set up and manage.
+- (-) Requires knowledge of Kubernetes.
 
 ### 🌏 6. For each key major component
 
