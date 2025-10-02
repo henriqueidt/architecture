@@ -106,14 +106,33 @@ https://github.com/henriqueidt/poc-rendering-techniques
 
 Overall, Astro fits great for simple static sites, but for robust website with different features and higher complexity, NextJS seems to be the right fit
 
-3. Single shared DB vs Splitted DBs per service
+#### Single shared DB vs Splitted DBs per service
+
+Single shared DB:
+
+- (+) Simpler architecture, less components to maintain
+- (+) Easier to keep data consistent across services
+- (-) High coupling between services
+- (-) Harder to scale services independently
+- (-) Changes to the DB structure can impact all services
+
+Splitted DBs per service:
 
 - (+) With independent DBs, each service manages it's own data, avoiding distributed monolith issues
 - (+) Better isolation, changes to one DB shouldn't affect the others
 - (-) Keeping data consistent between all services and DBs can be more complex
 - (-) More operational overhead with multiple DBs to manage
 
-4. Connect client directly to Microservices vs using an API Gateway
+#### Connect client directly to Microservices vs using an API Gateway
+
+Connect client directly to Microservices:
+
+- (+) Simpler architecture, less components to mantain
+- (+) Less latency as requests go directly to the microservice
+- (-) More complex client, as it needs to know all microservices endpoints
+- (-) Harder to migrate from monolith to microservices, as client would need to handle when to call which
+
+Using an API Gateway:
 
 - (+) The API Gateway can act as a facade, hiding complexity of calling multiple microservices from client
 - (+) The API Gateway makes it easy to migrate from the monolith to microservices (we can refactor the services as we go, as long as we keep the Gateway contract the same)
@@ -121,24 +140,34 @@ Overall, Astro fits great for simple static sites, but for robust website with d
 - (-) The API Gateway will introduce a new service to be mantained, monitored, scaled, etc.
 - (-) The API Gateway Adds another layer to debug, observe
 
-5. Amazon MSK
+#### Amazon MSK
 - (+) Highly available and scalable without much overhead
 - (+) AWS ecosystem
 - (+) Data persistence and replayability
 - (+) Compability with Apache Kafka ecosystem
 - (-) More expensive than self managed Kafka
 
-6. Aggregator service vs GraphQL
+#### Aggregator service vs GraphQL:
+
+Aggregator service:
+
 - (+) More useful to handle multiple usecases
 - (+) Less overhead of adding a new structure (GraphQL server)
 - (-) Less flexible for clients
 - (-) More endpoints to mantain
 
-7. ECS Fargate vs EKS
-- ECS Fargate
-  - (+) Use CloudWatch for monitoring and logging
-  - (+) Runs on AWS infrastructure.
-  - (+) Access managed via IAM roles.
+GraphQL:
+
+- (+) More flexible for clients
+- (+) Single endpoint
+- (-) More overhead of adding a new structure (GraphQL server)
+- (-) More complexity on client side to build queries
+
+#### ECS Fargate vs EKS
+ECS Fargate
+- (+) Use CloudWatch for monitoring and logging
+- (+) Runs on AWS infrastructure.
+- (+) Access managed via IAM roles.
 
 ### 🌏 6. For each key major component
 
