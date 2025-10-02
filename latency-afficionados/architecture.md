@@ -51,6 +51,8 @@ The backend is in a monolith on Java 1.4. We need to migrate it to java 21, whil
 
 ![Architecture Diagram](./architecture.drawio.png)
 
+![Usecases Diagram](./use-case.drawio.png)
+
 
 ### 🧭 5. Trade-offs
 
