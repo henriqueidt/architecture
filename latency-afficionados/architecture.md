@@ -113,7 +113,6 @@ Overall, Astro fits great for simple static sites, but for robust website with d
 Single shared DB:
 
 - (+) Simpler architecture, less components to maintain
-- (+) Easier to keep data consistent across services
 - (-) High coupling between services
 - (-) Harder to scale services independently
 - (-) Changes to the DB structure can impact all services
@@ -122,7 +121,6 @@ Splitted DBs per service:
 
 - (+) With independent DBs, each service manages it's own data, avoiding distributed monolith issues
 - (+) Better isolation, changes to one DB shouldn't affect the others
-- (-) Keeping data consistent between all services and DBs can be more complex
 - (-) More operational overhead with multiple DBs to manage
 
 #### Connect client directly to Microservices vs using an API Gateway
@@ -156,7 +154,6 @@ Aggregator service:
 - (+) More useful to handle multiple usecases
 - (+) Less overhead of adding a new structure (GraphQL server)
 - (-) Less flexible for clients
-- (-) More endpoints to mantain
 
 GraphQL:
 
@@ -169,7 +166,6 @@ GraphQL:
 
 ECS Fargate (Elastic Container Service):
 
-- (+) Use CloudWatch for monitoring and logging
 - (+) Runs on AWS infrastructure.
 - (+) Access managed via IAM roles.
 - (+) Simpler to set up and manage.
@@ -178,7 +174,7 @@ ECS Fargate (Elastic Container Service):
 
 EKS (Elastic Kubernetes Service):
 
-- (+) More control over the Kubernetes environment.
+- (+) More control over the Kubernetes environment when compared to ECS.
 - (+) More options of configurations and customizations.
 - (+) Can run on multiple cloud providers or on-premises.
 - (-) More complex to set up and manage.
