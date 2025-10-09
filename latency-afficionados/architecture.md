@@ -53,7 +53,6 @@ The backend is in a monolith on Java 1.4. We need to migrate it to java 21, whil
 
 ![Usecases Diagram](./use-case.drawio.png)
 
-
 ### 🧭 5. Trade-offs
 
 List the tradeoffs analysis, comparing pros and cons for each major decision.
@@ -143,6 +142,7 @@ Using an API Gateway:
 - (-) The API Gateway Adds another layer to debug, observe
 
 #### Amazon MSK
+
 - (+) Highly available and scalable without much overhead
 - (+) AWS ecosystem
 - (+) Data persistence and replayability
@@ -153,9 +153,7 @@ Using an API Gateway:
 
 Aggregator service:
 
-- (+) More useful to handle multiple usecases
 - (+) Less overhead of adding a new structure (GraphQL server)
-- (-) Less flexible for clients
 - (-) More endpoints to mantain
 
 GraphQL:
@@ -178,8 +176,8 @@ ECS Fargate (Elastic Container Service):
 
 EKS (Elastic Kubernetes Service):
 
-- (+) More control over the Kubernetes environment.
-- (+) More options of configurations and customizations.
+- (+) More control over the Kubernetes environment when compared to ECS.
+- (+) More options of configurations and customizations comparing to ECS.
 - (+) Can run on multiple cloud providers or on-premises.
 - (-) More complex to set up and manage.
 - (-) Requires knowledge of Kubernetes.
@@ -224,12 +222,15 @@ Example:
 ```
 
 - RESP Body:
+
   ```JSON
    {
     "message": "String" | "A message describing if the registration was successfull or not"
    }
   ```
+
   Success Example:
+
   ```JSON
     {
       "message": "User registered successfully"
@@ -237,6 +238,7 @@ Example:
   ```
 
   Failure Example:
+
   ```JSON
     {
       "message": "There was a problem registering the user"
@@ -462,10 +464,12 @@ Example:
 `Uploads an image for a specific product (authentication required) (multiple calls for multiple images)`
 
 - REQ Body: Multipart form-data with image files
+
   - Field Name: `image`
   - File Types: JPEG, PNG
 
 - REQ Example:
+
   ```HTTP
   POST /api/products/123456/images
   Content-Type: multipart/form-data
@@ -488,7 +492,6 @@ Example:
     "message": "Image uploaded successfully"
   }
   ```
-
 
 Recommended Reading: http://diego-pacheco.blogspot.com/2018/05/internal-system-design-forgotten.html
 
