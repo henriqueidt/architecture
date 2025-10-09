@@ -98,6 +98,7 @@ https://github.com/henriqueidt/poc-rendering-techniques
   - (+) Good Out of the Box BE integration tools (API routes, server actions)
   - (+) Built in performance features like Link prefetching, image optimization
   - (-) Bundle size
+  - (-) High coupling with NextJS framework
 
 - Astro
   - (+) Lighter bundle, only serves necessary JS
