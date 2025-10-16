@@ -491,6 +491,82 @@ Example:
   }
   ```
 
+**Reviews Service**
+
+TODO
+
+**Cart Service**
+
+TODO
+
+**Payment Service**
+
+1. **POST /api/payments/checkout**
+
+`Starts the checkout process for the items in the user's cart`
+
+- REQ Body:
+  ```JSON
+  {
+    "customer_email": "string" | "Email of the customer",
+    "line_items": [
+      {
+        "adjustable_quantity": {
+          "enabled": "boolean" | "Tells if the quantity can be adjusted during checkout",
+          "maximum": "integer" | "Maximum quantity",
+          "minimum": "integer" | "Minimum quantity"
+        },
+        "price_data": {
+          "currency": "string" | "3 letter currency code",
+          "product_data": {
+            "name": "string" | "Name of the product",
+            "images": [
+              "string" | "Image URL of the product"
+            ]
+          },
+          "unit_amount": "integer" | "Price in cents"
+        },
+        "quantity": "integer" | "Quantity of the product"
+      }
+    ],
+    "mode": "string" | "Mode of the checkout session, payment | subscription | setup",
+    "return_url": "string" | "URL to redirect if user cancels the payment",
+    "success_url": "string" | "URL to redirect after successful payment",
+    "ui_mode": "string" | "The mode of the checkout page. custom = embedded components, embedded = iframe, hosted = redirect to Stripe hosted page",
+  }
+  ```
+  Example:
+  ```JSON
+  {
+    "customer_email": "john.doe@example.com",
+  }
+    "line_items": [
+      {
+        "adjustable_quantity": {
+          "enabled": true,
+          "maximum": 10,
+          "minimum": 1
+        },
+        "price_data": {
+          "currency": "usd",
+          "product_data": {
+            "name": "Super Mario World",
+            "images": [
+              "https://cdn.example.com/img/123.jpg"
+            ]
+          },
+          "unit_amount": 4500
+        },
+        "quantity": 1
+      }
+    ],
+    "mode": "payment",
+    "return_url": "https://example.com/cart",
+    "success_url": "https://example.com/success",
+    "ui_mode": "hosted"
+  }
+  ```
+
 Recommended Reading: http://diego-pacheco.blogspot.com/2018/05/internal-system-design-forgotten.html
 
 ### 🖹 7. Migrations
