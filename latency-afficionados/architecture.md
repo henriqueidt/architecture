@@ -506,6 +506,7 @@ TODO
 `Starts the checkout process for the items in the user's cart`
 
 - REQ Body:
+
   ```JSON
   {
     "customer_email": "string" | "Email of the customer",
@@ -535,7 +536,9 @@ TODO
     "ui_mode": "string" | "The mode of the checkout page. custom = embedded components, embedded = iframe, hosted = redirect to Stripe hosted page",
   }
   ```
+
   Example:
+
   ```JSON
   {
     "customer_email": "john.doe@example.com",
@@ -561,9 +564,65 @@ TODO
       }
     ],
     "mode": "payment",
-    "return_url": "https://example.com/cart",
+    "cancel_url": "https://example.com/cart",
     "success_url": "https://example.com/success",
     "ui_mode": "hosted"
+  }
+  ```
+
+- RESP Body:
+  ```JSON
+  {
+    "checkout_url": "string" | "The URL to redirect the user to complete the payment",
+    "session_id": "string" | "The ID of the created checkout session"
+  }
+  ```
+  Example:
+  ```JSON
+  {
+    "checkout_url": "https://checkout.stripe.com/pay/4e2b9f7a-3c6d-4f1a-9b21d2e3b",
+    "session_id": "a1b2c3d4e5f6g7h8i9j0k"
+  }
+  ```
+
+2. **GET /api/payments/checkout/:id?expand=line_items**
+
+`Retrieves the data of a checkout session`
+
+- RESP Body:
+  ```JSON
+  {
+    "payment_status": "string" | "The payment status of the checkout session",
+    "amount_total": "integer" | "The total amount of the checkout session in cents",
+    "line_items": [
+      {
+        "id": "string" | "The ID of the line item",
+        "description": "string" | "The description of the line item",
+        "quantity": "integer" | "The quantity of the line item",
+        "price": {
+          "currency": "string" | "The currency of the price",
+          "amount": "integer" | "The amount of the price"
+        }
+      }
+    ]
+  }
+  ```
+  Example:
+  ```JSON
+  {
+    "payment_status": "completed",
+    "amount_total": 4500,
+    "line_items": [
+      {
+        "id": "li_123",
+        "description": "Super Mario World",
+        "quantity": 1,
+        "price": {
+          "currency": "usd",
+          "amount": 4500
+        }
+      }
+    ]
   }
   ```
 
@@ -575,11 +634,42 @@ IF Migrations are required describe the migrations strategy with proper diagrams
 
 ### 🖹 8. Testing strategy
 
-Explain the techniques, principles, types of tests and will be performaned, and spesific details how to mock data, stress test it, spesific chaos goals and assumptions.
+- Unit Tests
+  - Test UI components for fast feedback
+  - Test services logic
+- Integration Tests
+  - Test services integration with databases
+  - Test aggregator service integration with microservices
+- End to End Tests
+  - Test critical user flows i.e.
+    - Login
+    - Create a product
+    - Search a product
+    - View product details
+    - Add product to cart
+    - Checkout
+    - View order data
+- Performance Tests
+  - Test services response time under load
+  - Test system latency under load
+  - Test services memory and CPU usage under load
+- Visual Regression Tests
+  - Test UI components visual consistency after changes
+  - Test critical user flows visual consistency after changes
 
 ### 🖹 9. Observability strategy
 
-Explain the techniques, principles,types of observability that will be used, key metrics, what would be logged and how to design proper dashboards and alerts.
+- Logging
+  - Logging with correlation IDs on Splunk
+  - Log important events like items added, purchases, errors and warnings
+  - Splunk dashboards for easy visualization of error patterns
+- UI Insights
+  - Heap Analytics for user behavior analysis
+  - Google Analytics for traffic and conversion tracking
+- Metrics
+  - Prometheus for collecting service metrics
+  - Grafana dashboards for visualizing service performance
+  - Key metrics: request latency, error rates, CPU and memory usage
 
 ### 🖹 10. Data Store Designs
 
