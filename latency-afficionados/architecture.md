@@ -635,12 +635,20 @@ IF Migrations are required describe the migrations strategy with proper diagrams
 ### 🖹 8. Testing strategy
 
 - Unit Tests
-  - Test UI components for fast feedback
-  - Test services logic
+  - UI unit testing
+    - Jest
+		- React Testing Library
+	- UI type checking
+		- Typescript
+  - BE unit testing
+		- JUnit
+		- Mockito & PowerMockito
+
 - Integration Tests
   - Test services integration with databases
   - Test aggregator service integration with microservices
 - End to End Tests
+	- Playwright
   - Test critical user flows i.e.
     - Login
     - Create a product
