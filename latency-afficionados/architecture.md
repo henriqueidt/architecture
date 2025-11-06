@@ -493,11 +493,210 @@ Example:
 
 **Reviews Service**
 
-TODO
+1. **POST /api/products/{id}/reviews**
+
+`Submits a review for a specific product`
+
+- REQ Body:
+  ```JSON
+  {
+    "rating": "Number" | "The rating given by the reviewer (1-5)",
+    "comment": "String" | "The review comment"
+  }
+  ```
+  Example:
+  ```JSON
+  {
+    "rating": 5,
+    "comment": "Amazing game!"
+  }
+  ```
+- RESP Body:
+  ```JSON
+  {
+    "id": "String" | "The ID of the created review",
+    "message": "String" | "A message indicating the review submission status"
+  }
+  ```
+  Example:
+  ```JSON
+  {
+    "id": "r123",
+    "message": "Review submitted successfully"
+  }
+  ```
+
+2. **GET /api/products/{id}/reviews**
+
+`Gets reviews for a specific product with pagination`
+
+- QUERY PARAMS:
+
+  |   Param   | Type |  Description   |
+  | :-------: | :--: | :------------: |
+  |   page    | int  |  Current page  |
+  | page_size | int  | Items per page |
+
+- REQ Example:
+
+  ```HTTP
+  GET /api/products/123/reviews?page=1&page_size=10
+  ```
+
+- RESP Body:
+
+  ```JSON
+  {
+    "data": [
+      {
+        "id": "String" | "The ID of the review",
+        "name": "String" | "The name of the reviewer",
+        "avatar": "String" | "The avatar URL of the reviewer",
+        "rating": "Number" | "The rating given by the reviewer",
+        "comment": "String" | "The review comment"
+      }
+    ],
+    "pagination": {
+      "page": "Number" | "Current page of reviews",
+      "page_size": "Number" | "Number of reviews per page",
+      "totalItems": "Number" | "Total number of reviews",
+      "totalPages": "Number" | "Total pages of reviews"
+    }
+  }
+  ```
+
+  Example:
+
+  ```JSON
+  {
+    "data": [
+      {
+        "id": "r1",
+        "name": "John Doe",
+        "avatar": "https://cdn.example.com/avatars/john.jpg",
+        "rating": 5,
+        "comment": "Amazing game!"
+      }
+    ],
+    "pagination": {
+      "page": 1,
+      "page_size": 10,
+      "totalItems": 1,
+      "totalPages": 1
+    }
+  }
+  ```
 
 **Cart Service**
 
-TODO
+1. **POST /api/cart/add**
+
+`Add a product to the user's cart`
+
+- REQ Body:
+  ```JSON
+  {
+    "product_id": "String" | "The ID of the product to add to the cart",
+    "quantity": "Number" | "The quantity of the product to add"
+  }
+  ```
+  Example:
+  ```JSON
+  {
+    "product_id": "12345",
+    "quantity": 2
+  }
+  ```
+- RESP Body:
+  ```JSON
+  {
+    "message": "String" | "A message indicating the add to cart status"
+  }
+  ```
+  Example:
+  ```JSON
+  {
+    "message": "Product added to cart successfully"
+  }
+  ```
+
+2. **GET /api/cart**
+   `Retrieves the current user's cart`
+
+- RESP Body:
+  ```JSON
+  {
+    "items": [
+      {
+        "product_id": "String" | "The ID of the product",
+        "title": "String" | "The title of the product",
+        "price": "Number" | "The price of the product",
+        "quantity": "Number" | "The quantity of the product in the cart"
+      }
+    ],
+    "total_amount": "Number" | "The total amount of the cart"
+  }
+  ```
+  Example:
+  ```JSON
+  {
+    "items": [
+      {
+        "product_id": "12345",
+        "title": "Super Mario World",
+        "price": 14500,
+        "quantity": 2
+      }
+    ],
+    "total_amount": 29000
+  }
+  ```
+
+3. **DELETE /api/cart/remove/{id}**
+
+`Removes a product from the user's cart`
+
+- RESP Body:
+  ```JSON
+  {
+    "message": "String" | "A message indicating the remove from cart status"
+  }
+  ```
+  Example:
+  ```JSON
+  {
+    "message": "Product removed from cart successfully"
+  }
+  ```
+
+4. **PUT /api/cart/update/{id}**
+
+`Updates the quantity of a product in the user's cart`
+
+- REQ Body:
+  ```JSON
+  {
+    "quantity": "Number" | "The new quantity of the product in the cart"
+  }
+  ```
+  Example:
+  ```JSON
+  {
+    "quantity": 3
+  }
+  ```
+- RESP Body:
+  ```JSON
+  {
+    "message": "String" | "A message indicating the update cart status"
+  }
+  ```
+  Example:
+  ```JSON
+  {
+    "message": "Cart updated successfully"
+  }
+  ```
 
 **Payment Service**
 
@@ -705,7 +904,78 @@ IF Migrations are required describe the migrations strategy with proper diagrams
 
 ### 🖹 10. Data Store Designs
 
-For each different kind of data store i.e (Postgres, Memcached, Elasticache, S3, Neo4J etc...) describe the schemas, what would be stored there and why, main queries, expectations on performance. Diagrams are welcome but you really need some dictionaries.
+#### 10.1 - Database Schemas
+
+##### User Table - Postgres
+
+Stores user data, to be used on login, authentication, authorization and user management.
+
+| Column        | Type      | Constraints                                      |
+| ------------- | --------- | ------------------------------------------------ |
+| id            | UUID      | Primary Key, NOT NULL                            |
+| name          | VARCHAR   | NOT NULL                                         |
+| email         | VARCHAR   | UNIQUE, NOT NULL                                 |
+| password_hash | VARCHAR   | NOT NULL                                         |
+| created_at    | TIMESTAMP | NOT NULL, DEFAULT now()                          |
+| updated_at    | TIMESTAMP | NOT NULL, DEFAULT now() (update on modification) |
+
+##### Product Table - Postgres
+
+Stores product data, to be used in product listing, searching, viewing and management.
+
+| Column      | Type      | Constraints                                      |
+| ----------- | --------- | ------------------------------------------------ |
+| id          | UUID      | Primary Key, NOT NULL                            |
+| title       | VARCHAR   | NOT NULL                                         |
+| description | TEXT      | NOT NULL                                         |
+| price       | DECIMAL   | NOT NULL                                         |
+| category    | VARCHAR   | NOT NULL                                         |
+| created_at  | TIMESTAMP | NOT NULL, DEFAULT now()                          |
+| updated_at  | TIMESTAMP | NOT NULL, DEFAULT now() (update on modification) |
+| image_urls  | TEXT[]    |                                                  |
+
+##### Review Table - Postgres
+
+Stores product reviews data, to be used in product rating and commenting by users
+
+| Column     | Type      | Constraints                                      |
+| ---------- | --------- | ------------------------------------------------ |
+| id         | UUID      | Primary Key, NOT NULL                            |
+| product_id | UUID      | Foreign Key (references Product.id), NOT NULL    |
+| user_id    | UUID      | Foreign Key (references User.id), NOT NULL       |
+| rating     | INT       | NOT NULL, CHECK (rating >= 1 AND rating <= 5)    |
+| comment    | TEXT      | NOT NULL                                         |
+| created_at | TIMESTAMP | NOT NULL, DEFAULT now()                          |
+| updated_at | TIMESTAMP | NOT NULL, DEFAULT now() (update on modification) |
+
+##### Cart Table - Postgres
+
+Stores cart data, to be used in cart management by users. Each row represents a product in the user's cart.
+
+| Column     | Type      | Constraints                                                   |
+| ---------- | --------- | ------------------------------------------------------------- |
+| id         | UUID      | Primary Key, NOT NULL                                         |
+| cart_id    | UUID      | Foreign Key (references Cart.id), NOT NULL                    |
+| user_id    | UUID      | Foreign Key (references User.id), NOT NULL                    |
+| product_id | UUID      | Foreign Key (references Product.id), NOT NULL                 |
+| quantity   | INT       | NOT NULL, CHECK (quantity > 0)                                |
+| created_at | TIMESTAMP | NOT NULL, DEFAULT now()                                       |
+| updated_at | TIMESTAMP | NOT NULL, DEFAULT now() (update on modification)              |
+| status     | VARCHAR   | NOT NULL, CHECK (status IN ('active', 'ordered', 'canceled')) |
+
+##### Payment Table - Postgres
+
+Stores payment data, to be used to track payment status for user carts.
+
+| Column     | Type      | Constraints                                                    |
+| ---------- | --------- | -------------------------------------------------------------- |
+| id         | UUID      | Primary Key, NOT NULL                                          |
+| cart_id    | UUID      | Foreign Key (references Cart.id), NOT NULL                     |
+| user_id    | UUID      | Foreign Key (references User.id), NOT NULL                     |
+| amount     | DECIMAL   | NOT NULL                                                       |
+| status     | VARCHAR   | NOT NULL, CHECK (status IN ('pending', 'completed', 'failed')) |
+| created_at | TIMESTAMP | NOT NULL, DEFAULT now()                                        |
+| updated_at | TIMESTAMP | NOT NULL, DEFAULT now() (update on modification)               |
 
 ### 🖹 11. Technology Stack
 
