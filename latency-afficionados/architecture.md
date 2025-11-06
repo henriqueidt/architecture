@@ -635,21 +635,31 @@ IF Migrations are required describe the migrations strategy with proper diagrams
 ### 🖹 8. Testing strategy
 
 - Unit Tests
+
   - UI unit testing
+    - 100% branches coverage
+    - 100% functions coverage
     - Jest
-		- React Testing Library
-	- UI type checking
-		- Typescript
+    - React Testing Library
+  - UI type checking
+    - Typescript
+    - No components or pages written in JS
   - BE unit testing
-		- JUnit
-		- Mockito & PowerMockito
+    - 100% branches coverage
+    - 80% functions coverage
+    - JUnit
+    - Mockito & PowerMockito
 
 - Integration Tests
   - Test services integration with databases
+    - Test database schema migrations
+    - Test main queries
+  - Test stripe integration
   - Test aggregator service integration with microservices
-- End to End Tests
-	- Playwright
-  - Test critical user flows i.e.
+- End to End Tests & Visual Regression Tests
+  - Playwright
+  - Test concistensy of UI
+  - Critical user flows:
     - Login
     - Create a product
     - Search a product
@@ -658,26 +668,40 @@ IF Migrations are required describe the migrations strategy with proper diagrams
     - Checkout
     - View order data
 - Performance Tests
-  - Test services response time under load
-  - Test system latency under load
-  - Test services memory and CPU usage under load
-- Visual Regression Tests
-  - Test UI components visual consistency after changes
-  - Test critical user flows visual consistency after changes
+  - Stress Testing with Grafana K6
+    - Test services response time under load for major user flows
+      - P95: 500ms for product creation
+      - P95: 200ms for product listing
+      - P95: 300ms for product details
+      - P95: 500ms for checkout process
+- A/B Tests
+  - Used before productizing major changes
+  - Optimizely
 
 ### 🖹 9. Observability strategy
 
 - Logging
-  - Logging with correlation IDs on Splunk
-  - Log important events like items added, purchases, errors and warnings
-  - Splunk dashboards for easy visualization of error patterns
+  - Splunk
+  - Correlation IDs for tracing requests
+  - Logging Levels:
+    - INFO: API calls, service start/stop
+    - WARN: Recoverable errors
+    - ERROR: Exceptions, API errors
+  - Splunk dashboards
+    - Error rates
+    - Warning rates
+    - Important events rates
 - UI Insights
-  - Heap Analytics for user behavior analysis
-  - Google Analytics for traffic and conversion tracking
+  - Heap Analytics
+  - User session tracking
+  - Measure user engagement, session time, retention
 - Metrics
   - Prometheus for collecting service metrics
   - Grafana dashboards for visualizing service performance
-  - Key metrics: request latency, error rates, CPU and memory usage
+    - CPU usage
+    - Memory usage
+    - Response time
+    - Server Load
 
 ### 🖹 10. Data Store Designs
 
