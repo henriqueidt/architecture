@@ -977,6 +977,49 @@ Stores payment data, to be used to track payment status for user carts.
 | created_at | TIMESTAMP | NOT NULL, DEFAULT now()                                        |
 | updated_at | TIMESTAMP | NOT NULL, DEFAULT now() (update on modification)               |
 
+#### 10.2 - Main Queries
+
+##### Get Products with Pagination, Sorting and Filtering
+
+```SQL
+SELECT * FROM Product
+WHERE category = $1 AND title ILIKE '%' || $2 || '%'
+ORDER BY CASE WHEN $3 = 'price_asc' THEN price END ASC,
+         CASE WHEN $3 = 'price_desc' THEN price END DESC,
+         CASE WHEN $3 = 'name_asc' THEN title END ASC,
+         CASE WHEN $3 = 'name_desc' THEN title END DESC
+LIMIT $4 OFFSET ($5 - 1) * $4;
+```
+
+##### Get Product Details
+
+```SQL
+SELECT * FROM Product WHERE id = $1;
+```
+
+##### Get Reviews for a Product with Pagination
+
+```SQL
+SELECT * FROM Review
+WHERE product_id = $1
+ORDER BY created_at DESC
+LIMIT $2 OFFSET ($3 - 1) * $2;
+```
+
+##### Get User Cart
+
+```SQL
+SELECT * FROM Cart
+WHERE user_id = $1 AND status = 'active';
+```
+
+##### Get Payment Status for Cart
+
+```SQL
+SELECT * FROM Payment
+WHERE cart_id = $1 AND user_id = $2;
+```
+
 ### 🖹 11. Technology Stack
 
 Describe your stack, what databases would be used, what servers, what kind of components, mobile/ui approach, general architecture components, frameworks and libs to be used or not be used and why.
