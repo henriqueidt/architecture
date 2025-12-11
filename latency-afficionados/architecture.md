@@ -941,8 +941,8 @@ Stores product reviews data, to be used in product rating and commenting by user
 | Column     | Type      | Constraints                                      |
 | ---------- | --------- | ------------------------------------------------ |
 | id         | UUID      | Primary Key, NOT NULL                            |
-| product_id | UUID      | Foreign Key (references Product.id), NOT NULL    |
-| user_id    | UUID      | Foreign Key (references User.id), NOT NULL       |
+| product_id | UUID      | (references Product.id), NOT NULL                |
+| user_id    | UUID      | (references User.id), NOT NULL                   |
 | rating     | INT       | NOT NULL, CHECK (rating >= 1 AND rating <= 5)    |
 | comment    | TEXT      | NOT NULL                                         |
 | created_at | TIMESTAMP | NOT NULL, DEFAULT now()                          |
@@ -955,9 +955,9 @@ Stores cart data, to be used in cart management by users. Each row represents a 
 | Column     | Type      | Constraints                                                   |
 | ---------- | --------- | ------------------------------------------------------------- |
 | id         | UUID      | Primary Key, NOT NULL                                         |
-| cart_id    | UUID      | Foreign Key (references Cart.id), NOT NULL                    |
-| user_id    | UUID      | Foreign Key (references User.id), NOT NULL                    |
-| product_id | UUID      | Foreign Key (references Product.id), NOT NULL                 |
+| cart_id    | UUID      | NOT NULL                                                      |
+| user_id    | UUID      | (references User.id), NOT NULL                                |
+| product_id | UUID      | (references Product.id), NOT NULL                             |
 | quantity   | INT       | NOT NULL, CHECK (quantity > 0)                                |
 | created_at | TIMESTAMP | NOT NULL, DEFAULT now()                                       |
 | updated_at | TIMESTAMP | NOT NULL, DEFAULT now() (update on modification)              |
@@ -970,8 +970,8 @@ Stores payment data, to be used to track payment status for user carts.
 | Column     | Type      | Constraints                                                    |
 | ---------- | --------- | -------------------------------------------------------------- |
 | id         | UUID      | Primary Key, NOT NULL                                          |
-| cart_id    | UUID      | Foreign Key (references Cart.id), NOT NULL                     |
-| user_id    | UUID      | Foreign Key (references User.id), NOT NULL                     |
+| cart_id    | UUID      | (references Cart.id), NOT NULL                                 |
+| user_id    | UUID      | (references User.id), NOT NULL                                 |
 | amount     | DECIMAL   | NOT NULL                                                       |
 | status     | VARCHAR   | NOT NULL, CHECK (status IN ('pending', 'completed', 'failed')) |
 | created_at | TIMESTAMP | NOT NULL, DEFAULT now()                                        |
@@ -1022,7 +1022,78 @@ WHERE cart_id = $1 AND user_id = $2;
 
 ### 🖹 11. Technology Stack
 
-Describe your stack, what databases would be used, what servers, what kind of components, mobile/ui approach, general architecture components, frameworks and libs to be used or not be used and why.
+#### Frontend Stack
+
+- **Framework**: Next.js 16
+  - ISR support
+  - Mature ecosystem
+  - Server Components for better performance
+  - Page pre-rendering capabitlities
+  - Built-in image optimization
+- **UI Library**: React 19
+  - Easier migration from React 16
+  - New features like concurrent rendering and automatic batching
+- **State Management**: Zustand
+  - Lightweight alternative to Redux
+  - Better performance and simpler API
+- **Styling**: CSS Modules
+  - Scoped styles to avoid conflicts
+- **Testing**: Jest + React Testing Library + Playwright
+  - Unit, integration, E2E and visual regression testing
+
+#### Backend Stack
+
+- **Language**: Java 25
+  - "Easier" migration from Java 1.4 than into other languages
+  - Secure with modern language features
+  - Performance improvements over Java 1.4
+- **Framework**: Spring Boot 4.0
+  - Modern microservices framework
+  - Muiltiple API built-in features
+  - Large community and ecosystem
+- **Testing**: JUnit 6 + Mockito
+  - Unit and integration testing
+
+#### Databases
+
+- **PostgreSQL 18**
+  - Separate database per microservice
+  - ACID
+    - Atomic: All operations are completed or none are applied, no partial updates.
+    - Consistent: No inconsistent data states. Data always change from one valid state to another.
+    - Isolated: Concurrent transactions do not interfere with each other.
+    - Durable: Once a transaction is committed, it will remain so, even if there is a failure, it will not be lost.
+- **Redis 7** (Caching Layer)
+  - Cache cart data for faster access
+
+#### Message Queue
+
+- **Amazon MSK**
+  - Event-driven communication between services
+  - Product creation/update events
+  - Review submission events
+  - Decouples services and enables async processing
+
+#### Storage
+
+- **Amazon S3**
+  - Product image storage
+  - CloudFront CDN for image delivery
+  - Presigned URLs for secure uploads
+
+#### Payment Integration
+
+- **Stripe API**
+  - PCI-compliant payment processing
+  - Hosted checkout UI
+  - Webhook support for payment events
+
+#### Monitoring & Observability
+
+- **Prometheus** (Metrics collection)
+- **Grafana** (Metrics visualization)
+- **Splunk** (Log aggregation)
+- **Heap Analytics** (User behavior tracking)
 
 ### 🖹 12. References
 
