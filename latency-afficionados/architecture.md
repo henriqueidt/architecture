@@ -910,29 +910,42 @@ IF Migrations are required describe the migrations strategy with proper diagrams
 
 Stores user data, to be used on login, authentication, authorization and user management.
 
-| Column        | Type      | Constraints                                      |
-| ------------- | --------- | ------------------------------------------------ |
-| id            | UUID      | Primary Key, NOT NULL                            |
-| name          | VARCHAR   | NOT NULL                                         |
-| email         | VARCHAR   | UNIQUE, NOT NULL                                 |
-| password_hash | VARCHAR   | NOT NULL                                         |
-| created_at    | TIMESTAMP | NOT NULL, DEFAULT now()                          |
-| updated_at    | TIMESTAMP | NOT NULL, DEFAULT now() (update on modification) |
+| Column           | Type         | Constraints                                      |
+| ---------------- | ------------ | ------------------------------------------------ |
+| id               | UUID         | Primary Key, NOT NULL                            |
+| name             | VARCHAR[255] | NOT NULL                                         |
+| email            | VARCHAR[255] | UNIQUE, NOT NULL                                 |
+| created_at       | TIMESTAMP    | NOT NULL, DEFAULT now()                          |
+| updated_at       | TIMESTAMP    | NOT NULL, DEFAULT now() (update on modification) |
+| provider_name    | VARCHAR[255] | NOT NULL                                         |
+| provider_user_id | VARCHAR[255] | NOT NULL                                         |
+
+##### Session Table - Postgres
+
+Stores user session data, to be used in authentication and authorization.
+
+| Column        | Type         | Constraints                                |
+| ------------- | ------------ | ------------------------------------------ |
+| id            | UUID         | Primary Key, NOT NULL                      |
+| user_id       | UUID         | Foreign Key (references User.id), NOT NULL |
+| access_token  | VARCHAR[512] | UNIQUE, NOT NULL                           |
+| refresh_token | VARCHAR[512] | UNIQUE, NOT NULL                           |
+| expiration    | TIMESTAMP    | NOT NULL                                   |
 
 ##### Product Table - Postgres
 
 Stores product data, to be used in product listing, searching, viewing and management.
 
-| Column      | Type      | Constraints                                      |
-| ----------- | --------- | ------------------------------------------------ |
-| id          | UUID      | Primary Key, NOT NULL                            |
-| title       | VARCHAR   | NOT NULL                                         |
-| description | TEXT      | NOT NULL                                         |
-| price       | DECIMAL   | NOT NULL                                         |
-| category    | VARCHAR   | NOT NULL                                         |
-| created_at  | TIMESTAMP | NOT NULL, DEFAULT now()                          |
-| updated_at  | TIMESTAMP | NOT NULL, DEFAULT now() (update on modification) |
-| image_urls  | TEXT[]    |                                                  |
+| Column      | Type         | Constraints                                      |
+| ----------- | ------------ | ------------------------------------------------ |
+| id          | UUID         | Primary Key, NOT NULL                            |
+| title       | VARCHAR[255] | NOT NULL                                         |
+| description | TEXT         | NOT NULL                                         |
+| price       | DECIMAL      | NOT NULL                                         |
+| category    | VARCHAR[255] | NOT NULL                                         |
+| created_at  | TIMESTAMP    | NOT NULL, DEFAULT now()                          |
+| updated_at  | TIMESTAMP    | NOT NULL, DEFAULT now() (update on modification) |
+| image_urls  | TEXT         | (Separated by commas)                            |
 
 ##### Review Table - Postgres
 
@@ -952,30 +965,30 @@ Stores product reviews data, to be used in product rating and commenting by user
 
 Stores cart data, to be used in cart management by users. Each row represents a product in the user's cart.
 
-| Column     | Type      | Constraints                                                   |
-| ---------- | --------- | ------------------------------------------------------------- |
-| id         | UUID      | Primary Key, NOT NULL                                         |
-| cart_id    | UUID      | NOT NULL                                                      |
-| user_id    | UUID      | (references User.id), NOT NULL                                |
-| product_id | UUID      | (references Product.id), NOT NULL                             |
-| quantity   | INT       | NOT NULL, CHECK (quantity > 0)                                |
-| created_at | TIMESTAMP | NOT NULL, DEFAULT now()                                       |
-| updated_at | TIMESTAMP | NOT NULL, DEFAULT now() (update on modification)              |
-| status     | VARCHAR   | NOT NULL, CHECK (status IN ('active', 'ordered', 'canceled')) |
+| Column     | Type         | Constraints                                                   |
+| ---------- | ------------ | ------------------------------------------------------------- |
+| id         | UUID         | Primary Key, NOT NULL                                         |
+| cart_id    | UUID         | NOT NULL                                                      |
+| user_id    | UUID         | (references User.id), NOT NULL                                |
+| product_id | UUID         | (references Product.id), NOT NULL                             |
+| quantity   | INT          | NOT NULL, CHECK (quantity > 0)                                |
+| created_at | TIMESTAMP    | NOT NULL, DEFAULT now()                                       |
+| updated_at | TIMESTAMP    | NOT NULL, DEFAULT now() (update on modification)              |
+| status     | VARCHAR[255] | NOT NULL, CHECK (status IN ('active', 'ordered', 'canceled')) |
 
 ##### Payment Table - Postgres
 
 Stores payment data, to be used to track payment status for user carts.
 
-| Column     | Type      | Constraints                                                    |
-| ---------- | --------- | -------------------------------------------------------------- |
-| id         | UUID      | Primary Key, NOT NULL                                          |
-| cart_id    | UUID      | (references Cart.id), NOT NULL                                 |
-| user_id    | UUID      | (references User.id), NOT NULL                                 |
-| amount     | DECIMAL   | NOT NULL                                                       |
-| status     | VARCHAR   | NOT NULL, CHECK (status IN ('pending', 'completed', 'failed')) |
-| created_at | TIMESTAMP | NOT NULL, DEFAULT now()                                        |
-| updated_at | TIMESTAMP | NOT NULL, DEFAULT now() (update on modification)               |
+| Column     | Type         | Constraints                                                    |
+| ---------- | ------------ | -------------------------------------------------------------- |
+| id         | UUID         | Primary Key, NOT NULL                                          |
+| cart_id    | UUID         | (references Cart.id), NOT NULL                                 |
+| user_id    | UUID         | (references User.id), NOT NULL                                 |
+| amount     | DECIMAL      | NOT NULL                                                       |
+| status     | VARCHAR[255] | NOT NULL, CHECK (status IN ('pending', 'completed', 'failed')) |
+| created_at | TIMESTAMP    | NOT NULL, DEFAULT now()                                        |
+| updated_at | TIMESTAMP    | NOT NULL, DEFAULT now() (update on modification)               |
 
 #### 10.2 - Main Queries
 
