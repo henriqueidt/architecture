@@ -59,6 +59,8 @@ for i in range(array.length):
         break
 ```
 
+![open-addressing](./open-addressing.png)
+
 - This approach has some problems like clustering, where a group of consecutive filled positions can make the search very long and slow
 - As the load factor (number of elements / size of array) increases, the performance of the hashmap decreases
 - If we want to increase the size of the array, we would need to rehash all the elements, because the modulo operation would change the resulting index
@@ -80,6 +82,8 @@ struct HashMapEntry {
   next: NextItemIndex
 }
 ```
+
+![collision-chaining](./collision-array.png)
 
 That solves a few problems:
 
