@@ -91,3 +91,24 @@ That solves a few problems:
 - Deleting an item is as simple as removing it from the linked list and updating the pointers
 
 The downside here is that we'll need to allocate more memory for the linked lists and that the performance will degrade as we're now acessing multiple lists to get a value instead of just an array position.
+
+
+## Multi-thread
+
+What happens when multiple threads try to access/modify a hashmap at concurrently?
+Multiple issues can happen:
+
+1. Read/write - if one thread is reading the same datapoint that another is writing to, it could return corrupted, partial data or even crash
+2. Write/write - Two threads inserting or modifying the same datapoint can cause conflicts, with overrides and corrupt internal pointers
+
+### Solutions
+
+
+1. Coarse-grained locking - Will lock the entire map, not allowing any operation in it while another thread operation is being done.
+   
+    1.2. Mutex (Mutual exclusion): Use a mutex to protect the data. It only allows one thread to access that given data at a time. It will lock the resource while it's being accessed by one thread and release afterwards
+
+2. Fine-grained locking: - Will lock individual buckets that are being modified, instead of the whole map. There's more complexity, but allows concurrent changes on different datapoints
+
+3. Read-write locks - Will distinguish between readers (allowing them to share access) and writters (allowing exclusive access)
+
