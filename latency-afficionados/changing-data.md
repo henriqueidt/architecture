@@ -49,3 +49,15 @@
 - One second ID that is used for business, i.e. in URLs
 
 3. Create a separate table to store an alias of old and new id
+
+
+## An alternative to keep data consistent
+
+### PII Duplication
+
+An alternative is to duplicate some PII across different DBs. With that, whenever retrieving an entity by it's id for example, the stored PII could be compared agains the one provided by the consumer, to validate the datapoint being accessed is the correct one.
+
+With that approach, there's a couple checks that need to be done:
+
+1. Tests - whenever refactoring, adding new data or making changes, at dev time, it should be tested to confirm the data integrity is not being broken
+2. Verification - Whenever a migration is done, or even periodically, it should be verified that the data has not been corrupted and maintain its integrity
