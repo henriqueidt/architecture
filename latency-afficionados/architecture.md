@@ -72,13 +72,11 @@ Tradeoffs:
 https://github.com/henriqueidt/poc-rendering-techniques
 
 - SSR (SERVER SIDE RENDERING):
-
   - (+) More performatic as most of computation is done on the server
   - (+) Better for Dynamic content as pages are render on request
   - (-) Low latency as pages are rendered on the server on each page request
 
 - CSR (CLIENT SIDE RENDERING) CURRENT:
-
   - (+) Less backend computation = cheaper
   - (+) Good for pages with high interaction
   - (-) Bad SEO
@@ -92,7 +90,6 @@ https://github.com/henriqueidt/poc-rendering-techniques
 2. NextJS vs Others
 
 - NextJS
-
   - (+) Mature ecossystem, less boilerplate, large community
   - (+) Easy to implement multiple rendering techniques Out of the Box
   - (+) Good Out of the Box BE integration tools (API routes, server actions)
@@ -462,7 +459,6 @@ Example:
 `Uploads an image for a specific product (authentication required) (multiple calls for multiple images)`
 
 - REQ Body: Multipart form-data with image files
-
   - Field Name: `image`
   - File Types: JPEG, PNG
 
@@ -834,7 +830,6 @@ IF Migrations are required describe the migrations strategy with proper diagrams
 ### 🖹 8. Testing strategy
 
 - Unit Tests
-
   - UI unit testing
     - 100% branches coverage
     - 100% functions coverage
@@ -1104,9 +1099,23 @@ WHERE cart_id = $1 AND user_id = $2;
 #### Monitoring & Observability
 
 - **Prometheus** (Metrics collection)
+  - Services metrics: request rate, error rate
+  - Resources: CPU, memory and disk usage
 - **Grafana** (Metrics visualization)
+  - Dashboards for each service (user, product, review, cart, payment)
+  - On-call dashboard with critical alerts summary
 - **Splunk** (Log aggregation)
+  - Logging from all services
+  - CorrelationId propagated for all services
+  - On-call dashboards for major flows (register,login, purchase, payment)
+  - Alerts:
+    - P1 - Service down, error rate > 5%
+    - P2 - High latency, service error < 5%
+    - P3 - Warnings - user bad use, malformed data
 - **Heap Analytics** (User behavior tracking)
+  - Session recordings with PII hidding for
+  - Tracking of user flows (abandon rate, screen time, most common flow)
+  - A/B testing success rates
 
 ### 🖹 12. References
 
