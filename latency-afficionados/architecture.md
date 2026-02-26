@@ -884,7 +884,15 @@ Pros:
       - P95: 500ms for checkout process
 - A/B Tests
   - Used before productizing major changes
-  - Optimizely
+  - Optimizely for configuring audience and percentages
+- CI/CD Pipeline
+  - Before Merge (github actions):
+    - Build
+    - Unit Tests
+    - Integration Tests
+  - After Merge:
+    - E2E Tests
+    - Deploy to production
 
 ### 🖹 9. Observability strategy
 
