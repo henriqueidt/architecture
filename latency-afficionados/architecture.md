@@ -830,20 +830,14 @@ Recommended Reading: http://diego-pacheco.blogspot.com/2018/05/internal-system-d
 The **Orchestrator Service** will act as facade — it will send requests to the monolith or to the new microservices, depending if the functionality is already migrated or not, until the monolith is fully migrated
 
 ```
-[Client]
-   │
-[Orchestrator Service]
-   ├──> [Monolith]          (legacy/fallback)
-   ├──> [User Service]      (migrated)
-   ├──> [Product Service]   (migrated)
-   ...
+Client -> Orchestrator -> Monolith
+                       -> Product Service
+                       -> User Service
 ```
-
-This approach allows:
 
 Pros:
 
-- Zero downtime - the monolith is stays as a fallback for not yet migrated services
+- Zero downtime - the monolith stays as a fallback for not yet migrated services
 - Rollback - if any issues on any of the microservices, it can be redirected back to the monolith until it's fixed
 - Easy to validate each microservice individually before migrating the next
 
