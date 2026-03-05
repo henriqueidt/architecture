@@ -918,6 +918,21 @@ Pros:
     - Memory usage
     - Response time
     - Server Load
+- Alerts
+  - Prometheus/Grafana alerts -> on-call Devops Engineer
+  - Splunk alerts -> on-call BE/UI Engineer
+  - Each alert must have a runbook:
+    1. Alert meaning
+    2. Most likely causes
+    3. steb-by-step diagnosis
+    4. Teams to escalate if not resolved
+- Health checks
+  - All microservices should expose a health-check endpoint
+    - GET `/health-check`
+      - Response:
+      - ```JSON
+        {"status": "UP"}
+        ```
 
 ### 🖹 10. Data Store Designs
 
