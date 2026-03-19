@@ -16,7 +16,7 @@ The operations it support are:
 - rate products with review and comments
 - recommend products to users based on preview browsing
 The UI is running on React 16
-The backend is in a monolith on Java 1.4. We need to migrate it to java 21, while also decomposing the monolith and having the best rendering time possible
+The backend is in a monolith on Java 1.4. We need to migrate it to java 25, while also decomposing the monolith and having the best rendering time possible
 
 ```
 
@@ -24,7 +24,7 @@ The backend is in a monolith on Java 1.4. We need to migrate it to java 21, whil
 
 ```
 1. Speed up rendering time as much as possible
-2. Migrate from Java 1.4 to Java 21
+2. Migrate from Java 1.4 to Java 25
 3. Decompose the monolith into separate repos
 4. Keep existing functionalities (post, search, view, rate, comment, recommendation)
 ```
@@ -176,6 +176,25 @@ EKS (Elastic Kubernetes Service):
 - (+) Can run on multiple cloud providers or on-premises.
 - (-) More complex to set up and manage.
 - (-) Requires knowledge of Kubernetes.
+
+#### Dual Write vs CDC
+
+**Dual Write:**
+The orchestrator writes to both old monolith DB and to microservices DB on every mutation
+
+- (+) Simplicity - explicit synchronization
+- (+) No extra infrastructure
+- (-) Risk of partial write (monolith works, microservice errors out)
+- (-) Increased latency (two DB writes)
+- (-) Orchestrator highly coupled into both systems
+
+**CDC (Change Data Capture):**
+Reads the DB WAL(Write-ahead log) from monolith DB, streams events to MSK (Kafka) and a cunsmer syncs the microservice DB.
+
+- (+) No changes to the write operations
+- (+) DBs syncronization is async
+- (-) New DB will be behind until sync is done
+- (-) Operational complexity (connector, kafka and consumer needs to be changed if the schema changes)
 
 ### 🌏 6. For each key major component
 
@@ -828,6 +847,8 @@ Recommended Reading: http://diego-pacheco.blogspot.com/2018/05/internal-system-d
 #### Strategy: Strangler Fig Pattern
 
 The **Orchestrator Service** will act as facade — it will send requests to the monolith or to the new microservices, depending if the functionality is already migrated or not, until the monolith is fully migrated
+
+CDC Strategy is going to be used to keep both monolith and microservices DBs in sync
 
 ```
 Client -> Orchestrator -> Monolith
