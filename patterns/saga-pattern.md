@@ -46,7 +46,7 @@
 
 
 ## Tradeoffs
-- Compensatory transactions can be very complex
+- Compensatory transactions can be very complex and not always a 100% rollback
 - High availability (log based)
 - Low coupling
 - High scalability
