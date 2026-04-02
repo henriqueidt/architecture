@@ -209,6 +209,22 @@ Reads the DB WAL(Write-ahead log) from monolith DB, streams events to MSK (Kafka
 - (+) Always up-to-date with latest browsing
 - (-) Higher compute cost (more frequent requests)
 
+#### AWS Personalize vs Custom ML implementation
+
+**AWS Personalize:**
+
+- (+) No ML model to maintain
+- (+) Auto scale
+- (-) AWS Lock-in
+- (-) No native Kafka consumer (need S3 Sink)
+
+**Custom ML Implementation**
+
+- (+) Can consume directly from MSK
+- (+) Full control over the recommendation algorithm
+- (-) Model training and maintaining complexity
+- (-) Model cold-start (without data)
+
 ### 🌏 6. For each key major component
 
 What is a majore component? A service, a lambda, a important ui, a generalized approach for all uis, a generazid approach for computing a workload, etc...
