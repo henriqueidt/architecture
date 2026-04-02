@@ -196,6 +196,19 @@ Reads the DB WAL(Write-ahead log) from monolith DB, streams events to MSK (Kafka
 - (-) New DB will be behind until sync is done
 - (-) Operational complexity (connector, kafka and consumer needs to be changed if the schema changes)
 
+#### Batch vs Real-time recommendations
+
+**Batch:**
+
+- (+) Fast responses - results already in DB + can be cached in memory
+- (+) Simple implementation (i.e. Nightly job)
+- (-) Won't reflect very recent browsing
+
+**Real time:**
+
+- (+) Always up-to-date with latest browsing
+- (-) Higher compute cost (more frequent requests)
+
 ### 🌏 6. For each key major component
 
 What is a majore component? A service, a lambda, a important ui, a generalized approach for all uis, a generazid approach for computing a workload, etc...
