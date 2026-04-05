@@ -869,6 +869,41 @@ Example:
   }
   ```
 
+**Recommendation Service**
+
+1. **GET /api/recommendations**
+
+`Returns a list of personalized products for the authenticated user, based on browsing history`
+
+- RESP Body:
+  ```JSON
+    {
+      "data": [
+        {
+          "id": "String" | "The ID of the product",
+          "title": "String" | "The title/name of the product",
+          "price": "Number" | "The price of the product",
+          "thumbnail": "String" | "The thumbnail URL of the product",
+          "score": "Number" | "How recommended is the product"
+        }
+      ]
+    }
+  ```
+  Example:
+  ```JSON
+    {
+      "data": [
+        {
+          "id": "12345",
+          "title": "Super Mario World",
+          "price": 145.00,
+          "thumbnail": "https://cdn.example.com/img/123.jpg",
+          "score": 0.92
+        }
+      ]
+    }
+  ```
+
 Recommended Reading: http://diego-pacheco.blogspot.com/2018/05/internal-system-design-forgotten.html
 
 ### 🖹 7. Migrations
