@@ -1107,6 +1107,21 @@ Stores payment data, to be used to track payment status for user carts.
 | created_at | TIMESTAMP    | NOT NULL, DEFAULT now()                                        |
 | updated_at | TIMESTAMP    | NOT NULL, DEFAULT now() (update on modification)               |
 
+##### AWS Personalize Events Bucket (S3)
+
+**Path: s3://game-products/events/year=YYYY/month=MM/day=DD/events.csv**
+
+Personalize will read in incremental mode on nightly job
+
+Stores product browsing events streamed fom MSK, stored in S3 and consumed by Personalize
+
+| Field      | Type   | Constraints            |
+| ---------- | ------ | ---------------------- |
+| USER_ID    | string | Maps to User.id        |
+| ITEM_ID    | string | Maps to Product.id     |
+| TIMESTAMP  | long   | Timestamp of the event |
+| EVENT_TYPE | string | `view` \| `rate`       |
+
 #### 10.2 - Main Queries
 
 ##### Get Products with Pagination, Sorting and Filtering
@@ -1204,6 +1219,10 @@ WHERE cart_id = $1 AND user_id = $2;
   - Review submission events
   - Decouples services and enables async processing
 
+- **MSK Connect**
+  - Streams product events from MSK to S3
+  - Managed Kafka Connect workers
+
 #### Storage
 
 - **Amazon S3**
@@ -1238,6 +1257,13 @@ WHERE cart_id = $1 AND user_id = $2;
   - Session recordings with PII hidding for
   - Tracking of user flows (abandon rate, screen time, most common flow)
   - A/B testing success rates
+
+#### Recommendation
+
+- **AWS Personalize**
+  - Trains on interaction data from S3
+  - Exposes real-time recommendations
+  - Nightly import dataset job reads new events incrementally
 
 ### 🖹 12. References
 
