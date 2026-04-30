@@ -225,6 +225,36 @@ Reads the DB WAL(Write-ahead log) from monolith DB, streams events to MSK (Kafka
 - (-) Model training and maintaining complexity
 - (-) Model cold-start (without data)
 
+#### Colocation DBs vs AWS RDS vs Aurora PostgreSQL
+
+**COLO:**
+
+- (+) Full control on hardware, OS, and PostgreSQL configs
+- (+) Cheaper if a DBA team is already alocated
+- (-) Network latency between colo DB and AWS services
+- (-) Requires dedicated team to manage
+- (-) Slower to provision more instances
+
+**Aurora PostgreSQL:**
+
+- (+) Automatic scale up to 128TB
+- (+) Optimized for high performance and scalability
+- (+) Near instant fail-over with replicas across three AZs
+- (-) More expensive than RDS
+- (-) Doesn't support newest versions of PostgreSQL (18)
+
+**RDS PostgreSQL:**
+
+- (+) Support newest versions of PostgreSQL
+- (+) Cheaper than Aurora
+- (-) Slower failover (1 min or more)
+- (-) Manual storage scaling
+
+- (+) No ML model to maintain
+- (+) Auto scale
+- (-) AWS Lock-in
+- (-) No native Kafka consumer (need S3 Sink)
+
 ### 🌏 6. For each key major component
 
 What is a majore component? A service, a lambda, a important ui, a generalized approach for all uis, a generazid approach for computing a workload, etc...
