@@ -250,10 +250,28 @@ Reads the DB WAL(Write-ahead log) from monolith DB, streams events to MSK (Kafka
 - (-) Slower failover (1 min or more)
 - (-) Manual storage scaling
 
-- (+) No ML model to maintain
-- (+) Auto scale
-- (-) AWS Lock-in
-- (-) No native Kafka consumer (need S3 Sink)
+#### Lambda vs Step Functions vs AWS Glue (Personalize Pipeline)
+
+**Lambda:**
+
+- (+) Simple and cheap for one API call
+- (+) No extra infraestructure
+- (-) Cannot chain async steps (import, campaign update)
+
+**Step Functions:**
+
+- (+) Handles long async process with Wait states and polling
+- (+) Can orchestrate the entire Personalize pipeline
+- (+) Built-in error handling, retries and alerts
+- (+) Visual workflow
+- (-) More complex to setup than Lambdas
+
+**AWS Glue:**
+
+- (+) Built for ETL (Extract, transform and Load) - good if we need to transform data before ingestion
+- (-) MSK Connect already writes the CSVs in Personalize schema, no transformation needed
+- (-) More expensive than other alternatives
+- (-) Overkill for the Personalize pipeline
 
 ### 🌏 6. For each key major component
 
@@ -907,31 +925,27 @@ Example:
 
 - RESP Body:
   ```JSON
-    {
-      "data": [
-        {
-          "id": "String" | "The ID of the product",
-          "title": "String" | "The title/name of the product",
-          "price": "Number" | "The price of the product",
-          "thumbnail": "String" | "The thumbnail URL of the product",
-          "score": "Number" | "How recommended is the product"
-        }
-      ]
-    }
+    [
+      {
+        "id": "String" | "The ID of the product",
+        "title": "String" | "The title/name of the product",
+        "price": "Number" | "The price of the product",
+        "thumbnail": "String" | "The thumbnail URL of the product",
+        "score": "Number" | "How recommended is the product"
+      }
+    ]
   ```
   Example:
   ```JSON
-    {
-      "data": [
-        {
-          "id": "12345",
-          "title": "Super Mario World",
-          "price": 145.00,
-          "thumbnail": "https://cdn.example.com/img/123.jpg",
-          "score": 0.92
-        }
-      ]
-    }
+    [
+      {
+        "id": "12345",
+        "title": "Super Mario World",
+        "price": 145.00,
+        "thumbnail": "https://cdn.example.com/img/123.jpg",
+        "score": 0.92
+      }
+    ]
   ```
 
 Recommended Reading: http://diego-pacheco.blogspot.com/2018/05/internal-system-design-forgotten.html
@@ -1145,12 +1159,13 @@ Personalize will read in incremental mode on nightly job
 
 Stores product browsing events streamed fom MSK, stored in S3 and consumed by Personalize
 
-| Field      | Type   | Constraints            |
-| ---------- | ------ | ---------------------- |
-| USER_ID    | string | Maps to User.id        |
-| ITEM_ID    | string | Maps to Product.id     |
-| TIMESTAMP  | long   | Timestamp of the event |
-| EVENT_TYPE | string | `view` \| `rate`       |
+| Field       | Type    | Constraints                                          |
+| ----------- | ------- | ---------------------------------------------------- |
+| USER_ID     | string  | Maps to User.id                                      |
+| ITEM_ID     | string  | Maps to Product.id                                   |
+| TIMESTAMP   | long    | Timestamp of the event                               |
+| EVENT_TYPE  | string  | `view` \| `rate`                                     |
+| EVENT_VALUE | integer | Rating value (1–5) for `rate` events, null otherwise |
 
 #### 10.2 - Main Queries
 
