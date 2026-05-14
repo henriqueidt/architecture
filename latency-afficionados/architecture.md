@@ -1303,6 +1303,28 @@ WHERE cart_id = $1 AND user_id = $2;
   - Tracking of user flows (abandon rate, screen time, most common flow)
   - A/B testing success rates
 
+#### Security
+
+1. API Security
+
+- API Gateway Rate limiting:
+  - Login: 10 req/min per IP
+  - Authenticated endpoints: 1000 req/min per User
+  - Public endpoints: 500 req/min per IP
+- CORS: Only known domains from client and other services in allowlist
+- Sanitization in every text inputs
+
+2. Infra Security
+
+- VPC (Virtual Private Cloud): All microservices inside private subnets, without direct access from internet
+- API Gateway: Only public access point
+- Security groups: Microservices only accept traffic from the API Gateway or other microservices
+
+3. Payment security - PCI DSS (Payment Card Industry Data Security Standard)
+
+- Card data is never traffed between services, only Stripe handles it
+- All Payment Service endpoints in HTTPS
+
 #### Recommendation
 
 - **AWS Personalize**
