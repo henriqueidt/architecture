@@ -2,16 +2,17 @@
 
 John Hammond wants a new social network for Dino junkies. The idea is to build a brand new social network with the features of: profiles, timelines, posts, comments, upload images and videos. However John wants to go further and wants the solution to also generate some content for him, so the content will come from user and from AI. He wants a LLM model capable of generating Jurassic facts, stories and even short comic stories. John wants the frontend in HTMX and the backend written in Java or Python. John wants the website to recommend users to follow and also want to have an online store where users can buy products. He wants the products to ahve links for every dino pic posted or video.
 
-John wants a solution that scale and is multi-region by default. John does not like monoliths neither lambdas, those are banned from the solution. John wants to be able to sensorship some posts in case they do not talk about dinos and want to be able to create a score system for users that are more engaged which will be rewarded.
+John wants a solution that scale and is multi-region by default. John does not like monoliths neither lambdas, those are banned from the solution. John wants to be able to censorship some posts in case they do not talk about dinos and want to be able to create a score system for users that are more engaged which will be rewarded.
 
 ## 🏛️ Structure
 
 ### 1. 🎯 Problem Statement and Context
 
 The problem is to have a social network for Dino junkies. It should have all the common social network features such as: profiles, timelines, posts, comments, upload images and videos. The social network must recommend users to follow.
+The solution must have a score system that ranks users by engagement in the platform.
 Along with that, the solution must also have AI generated content, like facts, stories and short comic stories.
 Additionally, the solution must also have an online store where users can buy products. Product pages must have links for the social media posts that references the product itself.
-On the backoffice side, the management team must be able to sensorship posts that do not talk about dinos and reward the users that are more engaged within the platform.
+On the backoffice side, the management team must be able to censorship posts that do not talk about dinos and reward the users that are more engaged within the platform.
 
 Constrains:
 
@@ -22,6 +23,12 @@ Constrains:
 - No lambdas
 
 ### 2. 🎯 Goals
+
+1. Connection between store and social media: Every image and video from social media must be connected with relevant store product
+2. Multi-region: Solution must be scalable and operating in multiple AWS regions
+3. Recommendation: The system must make smart recommendations of users to follow based on user's navigation history
+4. Score system: The solution must automatically qualify users by their engagement
+5. Assets optimization: The system must handle the high number of images/videos gracefully with low latency strategies (image optimization, lazy loading, etc)
 
 List in form of bullets what goals do have. Here it's great to have 5-10 lines.
 Example:
