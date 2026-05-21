@@ -8,18 +8,18 @@ John wants a solution that scale and is multi-region by default. John does not l
 
 ### 1. 🎯 Problem Statement and Context
 
-What is the problem? What is the context of the problem?
-Example:
+The problem is to have a social network for Dino junkies. It should have all the common social network features such as: profiles, timelines, posts, comments, upload images and videos. The social network must recommend users to follow.
+Along with that, the solution must also have AI generated content, like facts, stories and short comic stories.
+Additionally, the solution must also have an online store where users can buy products. Product pages must have links for the social media posts that references the product itself.
+On the backoffice side, the management team must be able to sensorship posts that do not talk about dinos and reward the users that are more engaged within the platform.
 
-```
-The problem is to sell shoes online, the main issue with buying shoes online is
-how we will make our users buy shoes if they cannot make them fit? We would need
-to have a huge selectio and find ways to people find they perpect show at the
-same time market teams would need to change campains all the time, we need to
-have way to make things fast and dynamic.
-```
+Constrains:
 
-Recomended Reading: [Breaking problems down](http://diego-pacheco.blogspot.com/2021/10/breaking-problems-down.html)
+- Frontend written in HTMX
+- Backend written in Java or Python
+- Solution must be multi-region
+- No monoliths
+- No lambdas
 
 ### 2. 🎯 Goals
 
