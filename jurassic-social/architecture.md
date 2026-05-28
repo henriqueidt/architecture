@@ -40,18 +40,10 @@ Constrains:
 
 ### 📐 3. Principles
 
-List in form of bullets what design principles you want to be followed, it's great to have 5-10 lines.
-Example:
-
-```
-1. Low Coupling: We need to watch for coupling all times.
-2. Flexibility: Users should be able to customize behavior without leaking the internals of the system. Leverage interfaces.
-3. Observability: we should expose all key metrics on main features. Sucess and errors counters need to be exposed.
-4. Testability: Chaos engineering is a must and property testing. Testing should be done by engineers all times.
-5. Cache efficiency: Should leverage SSD caches and all forms of caches as much as possible.
-```
-
-Recommended Reading: [Stability principles](http://diego-pacheco.blogspot.com/2018/01/stability-principles.html)
+1. Service Boundaries: Services communicate only through API contracts. No shared database.
+2. Fail-safe moderation: If there is an outage or failure in the relevance score system, content must be held until it can be scored properly.
+3. Stateless services: all state lives in an external store. That makes horizontal scaling and multi-region failover work
+4. Graceful degradation: Non-core features like store, recommendation and AI content must have a fallback and not stop the whole application
 
 ### 🏗️ 4. Overall Diagrams
 
