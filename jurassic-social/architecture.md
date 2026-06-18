@@ -59,6 +59,50 @@ Recommended Reading: [UML hidden gems](http://diego-pacheco.blogspot.com/2020/10
 
 ### 🧭 5. Trade-offs
 
+#### Multi region patters
+
+1. Single region
+   PROS (+)
+
+- Simplicity - no replication, no conflicts, no routing
+- Cost - cheapest model
+- Single source of truth
+- Easier to debug
+  Cons (-)
+- Single point of failure
+- High latency for geographically distributed users
+- Limited scale
+
+2. Active-Passive
+   One active region, others are in standby receiving async data replication
+
+- Cold standby - Infr off. Turns on only on disaster
+- Warm standby - Infra running in reduced scale
+- Hot standby - Complete infra running, ready to assume
+  PROS (+)
+- Reliability in case an entire region gets down
+- No write conflicts (Only active writes)
+- Direct operation
+  CONS (-)
+- Idle paid capacity
+- No latency gains
+- Failover can take time until next region is set up
+
+3. Active-Active
+   All regions attend traffic and read/write simultaneously
+
+3.1 Geographical sharding
+
+PROS (+)
+
+- Low latency (each region owns its data)
+- No idle capacity
+- Almost Instant failover
+  CONS (-)
+- Complex cross-shard operations
+- Complex routing
+- Complex re-sharding and rebalancing
+
 List the tradeoffs analysis, comparing pros and cons for each major decision.
 Before you need list all your major decisions, them run tradeoffs on than.
 example:
